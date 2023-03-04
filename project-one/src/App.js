@@ -5,6 +5,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      counter: 0,
       posts: [
         {
           id: 1,
@@ -24,10 +25,28 @@ class App extends Component {
       ],
     };
   }
-  render() {
+  timeoutUpdate = null;
+  componentDidMount() {
+    this.handleIntervalStateUpdate();
+  }
+  componentDidUpdate() {
+    this.handleIntervalStateUpdate();
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timeoutUpdate);
+  }
+  handleIntervalStateUpdate = () => {
     const { posts } = this.state;
+    posts[0].title = "New title changed";
+    this.timeoutUpdate = setTimeout(() => {
+      this.setState({ posts, counter: this.state.counter + 1 });
+    }, 2000);
+  };
+  render() {
+    const { counter, posts } = this.state;
     return (
       <div className="App">
+        <p>{counter}</p>
         {posts.map((postItem) => (
           <div
             key={postItem.id}
