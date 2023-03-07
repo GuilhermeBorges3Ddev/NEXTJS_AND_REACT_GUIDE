@@ -5,58 +5,39 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      counter: 0,
-      posts: [
-        {
-          id: 1,
-          title: "Quis dolor officia",
-          body: "The body one",
-        },
-        {
-          id: 2,
-          title: "Labore ut proident",
-          body: "The body two",
-        },
-        {
-          id: 3,
-          title: "Laborum aliqua officia",
-          body: "The body three",
-        },
-      ],
+      posts: [],
     };
   }
-  timeoutUpdate = null;
   componentDidMount() {
-    this.handleIntervalStateUpdate();
+    this.loadPosts();
   }
-  componentDidUpdate() {
-    this.handleIntervalStateUpdate();
-  }
-  componentWillUnmount() {
-    clearTimeout(this.timeoutUpdate);
-  }
-  handleIntervalStateUpdate = () => {
-    const { posts } = this.state;
-    posts[0].title = "New title changed";
-    this.timeoutUpdate = setTimeout(() => {
-      this.setState({ posts, counter: this.state.counter + 1 });
-    }, 2000);
+  loadPosts = async () => {
+    const postsResponse = fetch("https://jsonplaceholder.typicode.com/posts");
+    const photosResponse = fetch("https://jsonplaceholder.typicode.com/photos");
+    const [posts, photos] = await Promise.all([postsResponse, photosResponse]);
+    const postsJson = await posts.json();
+    const photosJson = await photos.json();
+    const postsAndPhotos = postsJson.map((post, index) => {
+      return { ...post, cover: photosJson[index].url };
+    });
+    this.setState({ posts: postsAndPhotos });
   };
   render() {
-    const { counter, posts } = this.state;
+    const { posts } = this.state;
     return (
-      <div className="App">
-        <p>{counter}</p>
-        {posts.map((postItem) => (
-          <div
-            key={postItem.id}
-            style={{ border: "1px solid black", margin: "1rem 0" }}
-          >
-            <h1>{postItem.title}</h1>
-            <p>{postItem.body}</p>
-          </div>
-        ))}
-      </div>
+      <section className="container">
+        <div className="posts">
+          {posts.map((postItem) => (
+            <div className="post" key={postItem.id}>
+              <img src={postItem.cover} alt={postItem.title} />
+              <div className="post-content">
+                <h1>{postItem.title}</h1>
+                <p>{postItem.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     );
   }
 }
