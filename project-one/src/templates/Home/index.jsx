@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "../../components/Button";
 import { Posts } from "../../components/Posts";
+import { TextInput } from "../../components/TextInput";
 import { loadPosts } from "../../utils/load-posts";
 import "./styles.css";
 
@@ -43,20 +44,33 @@ export class Home extends Component {
   render() {
     const { allPosts, page, posts, postsPerPage, searchValue } = this.state;
     const noMorePosts = page + postsPerPage >= allPosts.length;
+    const filteredPosts = !!searchValue
+      ? allPosts.filter((postItem) => {
+          return postItem.title
+            .toLowerCase()
+            .includes(searchValue.toLowerCase());
+        })
+      : posts;
     return (
       <section className="container">
-        <input type="search" onChange={this.handleChange} value={searchValue} />
-        <br />
-        <br />
-        <h1>Searched value: {searchValue || "Nothing"}</h1>
-        <br />
-        <Posts posts={posts} />
-        <div className="button-container">
-          <Button
-            text="Load more posts"
-            loadMorePostsAction={this.loadMorePosts}
-            isDisabled={noMorePosts}
+        <div className="search-container">
+          <TextInput
+            searchValue={searchValue}
+            handleChange={this.handleChange}
           />
+          {!!searchValue && <h1>Searched value: {searchValue}</h1>}
+        </div>
+        <br />
+        {filteredPosts.length > 0 && <Posts posts={filteredPosts} />}
+        {filteredPosts.length === 0 && <p>No posts found :(</p>}
+        <div className="button-container">
+          {!searchValue && (
+            <Button
+              text="Load more posts"
+              loadMorePostsAction={this.loadMorePosts}
+              isDisabled={noMorePosts}
+            />
+          )}
         </div>
       </section>
     );
