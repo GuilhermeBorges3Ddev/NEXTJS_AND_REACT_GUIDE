@@ -6,6 +6,6 @@ import "./styles/global-styles.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Home type="function" />
+    <Home type="class" />
   </React.StrictMode>
 );

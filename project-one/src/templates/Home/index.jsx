@@ -97,10 +97,13 @@ class HomeClass extends Component {
     const nextPage = page + postsPerPage;
     const nextPosts = allPosts.slice(nextPage, nextPage + postsPerPage);
     posts.push(...nextPosts);
-    this.setState({
-      posts,
-      page: nextPage,
-    });
+    this.setState(
+      {
+        posts,
+        page: nextPage,
+      },
+      () => console.info("More pages loaded...")
+    );
   };
   handleChange = (e) => {
     const { value } = e.target;
