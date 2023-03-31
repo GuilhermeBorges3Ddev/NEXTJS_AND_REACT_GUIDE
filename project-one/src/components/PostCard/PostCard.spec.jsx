@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-node-access */
 import { render, screen } from "@testing-library/react";
 import { PostCard } from ".";
 import { PostCardPropsMock } from "./mock";
@@ -22,5 +23,9 @@ describe("<PostCard />", () => {
     expect(imageElements[0]).toHaveAttribute("src", props.cover);
     expect(headingElements[0]).toBeInTheDocument();
     expect(paragraphText).toBeInTheDocument();
+  });
+  it("should match a snapshot of the PostCard tested above", () => {
+    const { container } = render(<PostCard {...props} />);
+    expect(container.firstChild).toMatchSnapshot();
   });
 });
