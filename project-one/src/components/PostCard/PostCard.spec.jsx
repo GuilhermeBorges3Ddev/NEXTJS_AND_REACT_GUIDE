@@ -1,5 +1,5 @@
-import React from "react";
 /* eslint-disable testing-library/no-node-access */
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import { PostCard } from ".";
 import { PostCardPropsMock } from "./mock";

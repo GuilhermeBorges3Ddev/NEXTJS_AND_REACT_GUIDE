@@ -40,6 +40,12 @@ describe("<Posts />", () => {
     expect(allImageTitlesRendered).toHaveLength(3);
     expect(allBodyRendered).toHaveLength(3);
   });
+  it("should render Posts components without any post", () => {
+    render(<Posts />);
+    expect(
+      screen.queryByRole("heading", { name: "/title/i" })
+    ).not.toBeInTheDocument();
+  });
   it("should match with Posts snapshots", () => {
     const { container } = render(<Posts {...props} />);
     expect(container.firstChild).toMatchSnapshot();
