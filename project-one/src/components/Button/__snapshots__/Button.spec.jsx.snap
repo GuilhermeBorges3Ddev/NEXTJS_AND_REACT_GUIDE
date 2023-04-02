@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Button /> should match the Button tested with the snaphot 1`] = `
+exports[`<Button /> should match the Button tested with the snapshot 1`] = `
 <button
   class="button"
 >

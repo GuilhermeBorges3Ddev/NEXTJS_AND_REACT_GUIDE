@@ -26,7 +26,7 @@ describe("<Button />", () => {
     const button = screen.getByRole("button", { name: /load more posts/i });
     expect(button).not.toBeDisabled();
   });
-  it("should match the Button tested with the snaphot", () => {
+  it("should match the Button tested with the snapshot", () => {
     const { container } = render(
       <Button text="Load More Posts..." isDisabled={false} />
     );
