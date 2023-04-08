@@ -1,5 +1,5 @@
-import React from "react";
-import "./styles.css";
+import React from 'react';
+import './styles.css';
 
 export const PostCard = ({ cover, title, id, body }) => (
   <div className="post" key={id}>

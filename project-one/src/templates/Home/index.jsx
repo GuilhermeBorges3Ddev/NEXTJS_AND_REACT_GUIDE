@@ -1,12 +1,12 @@
-import React, { Component, useCallback, useEffect, useState } from "react";
-import { Button } from "../../components/Button";
-import { Posts } from "../../components/Posts";
-import { TextInput } from "../../components/TextInput";
-import { loadPosts } from "../../utils/load-posts";
-import "./styles.css";
+import React, { Component, useCallback, useEffect, useState } from 'react';
+import { Button } from '../../components/Button';
+import { Posts } from '../../components/Posts';
+import { TextInput } from '../../components/TextInput';
+import { loadPosts } from '../../utils/load-posts';
+import './styles.css';
 
 export default function Home({ type }) {
-  if (type === "function") return <HomeFunction />;
+  if (type === 'function') return <HomeFunction />;
   return <HomeClass />;
 }
 
@@ -15,11 +15,11 @@ function HomeFunction() {
   const [allPosts, setAllPosts] = useState([]);
   const [page, setPage] = useState(0);
   const [postsPerPage] = useState(5);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
 
   const noMorePosts = page + postsPerPage >= allPosts.length;
 
-  const filteredPosts = !!searchValue
+  const filteredPosts = searchValue
     ? allPosts.filter((postItem) => {
         return postItem.title.toLowerCase().includes(searchValue.toLowerCase());
       })
@@ -58,13 +58,7 @@ function HomeFunction() {
       {filteredPosts.length > 0 && <Posts posts={filteredPosts} />}
       {filteredPosts.length === 0 && <p>No posts found :(</p>}
       <div className="button-container">
-        {!searchValue && (
-          <Button
-            text="Load more posts"
-            loadMorePostsAction={loadMorePosts}
-            isDisabled={noMorePosts}
-          />
-        )}
+        {!searchValue && <Button text="Load more posts" loadMorePostsAction={loadMorePosts} isDisabled={noMorePosts} />}
       </div>
     </section>
   );
@@ -78,7 +72,7 @@ class HomeClass extends Component {
       allPosts: [],
       page: 0,
       postsPerPage: 5,
-      searchValue: "",
+      searchValue: '',
     };
   }
   async componentDidMount() {
@@ -102,7 +96,7 @@ class HomeClass extends Component {
         posts,
         page: nextPage,
       },
-      () => console.info("More pages loaded...")
+      () => console.info('More pages loaded...'),
     );
   };
   handleChange = (e) => {
@@ -112,20 +106,15 @@ class HomeClass extends Component {
   render() {
     const { allPosts, page, posts, postsPerPage, searchValue } = this.state;
     const noMorePosts = page + postsPerPage >= allPosts.length;
-    const filteredPosts = !!searchValue
+    const filteredPosts = searchValue
       ? allPosts.filter((postItem) => {
-          return postItem.title
-            .toLowerCase()
-            .includes(searchValue.toLowerCase());
+          return postItem.title.toLowerCase().includes(searchValue.toLowerCase());
         })
       : posts;
     return (
       <section className="container">
         <div className="search-container">
-          <TextInput
-            searchValue={searchValue}
-            handleChange={this.handleChange}
-          />
+          <TextInput searchValue={searchValue} handleChange={this.handleChange} />
           {!!searchValue && <h1>Searched value: {searchValue}</h1>}
         </div>
         <br />
@@ -133,11 +122,7 @@ class HomeClass extends Component {
         {filteredPosts.length === 0 && <p>No posts found :(</p>}
         <div className="button-container">
           {!searchValue && (
-            <Button
-              text="Load more posts"
-              loadMorePostsAction={this.loadMorePosts}
-              isDisabled={noMorePosts}
-            />
+            <Button text="Load more posts" loadMorePostsAction={this.loadMorePosts} isDisabled={noMorePosts} />
           )}
         </div>
       </section>

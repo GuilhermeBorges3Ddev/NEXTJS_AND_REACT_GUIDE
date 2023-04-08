@@ -1,6 +1,6 @@
-import React from "react";
-import { PostCard } from "../PostCard";
-import "./styles.css";
+import React from 'react';
+import { PostCard } from '../PostCard';
+import './styles.css';
 
 const idRandSeed = Math.floor(Math.random() * 1000) + 1;
 
