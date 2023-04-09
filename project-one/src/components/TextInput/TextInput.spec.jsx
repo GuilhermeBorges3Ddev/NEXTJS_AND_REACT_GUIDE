@@ -12,16 +12,16 @@ describe('<TextInput />', () => {
   });
   it('should call handleChange function for each key pressed', () => {
     const fn = jest.fn();
-    render(<TextInput handleChange={fn} />);
-    const input = screen.getByPlaceholderText(/Type your search.../i);
     const value = 'New value';
+    render(<TextInput handleChange={fn} searchValue={value} />);
+    const input = screen.getByPlaceholderText(/Type your search.../i);
     userEvent.type(input, value);
     expect(input.value).toBe(value);
     expect(fn).toHaveBeenCalledTimes(value.length);
   });
   it('should match with the snapshot for TextInput already tested', () => {
     const fn = jest.fn();
-    const { container } = render(<TextInput handleChange={fn} />);
+    const { container } = render(<TextInput handleChange={fn} searchValue="" />);
     expect(container.firstChild).toMatchSnapshot();
   });
 });

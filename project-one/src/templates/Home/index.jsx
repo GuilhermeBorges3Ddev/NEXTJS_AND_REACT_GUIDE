@@ -1,4 +1,5 @@
 import React, { Component, useCallback, useEffect, useState } from 'react';
+import P from 'prop-types';
 import { Button } from '../../components/Button';
 import { Posts } from '../../components/Posts';
 import { TextInput } from '../../components/TextInput';
@@ -9,6 +10,10 @@ export default function Home({ type }) {
   if (type === 'function') return <HomeFunction />;
   return <HomeClass />;
 }
+
+Home.propTypes = {
+  type: P.string.isRequired,
+};
 
 function HomeFunction() {
   const [posts, setPosts] = useState([]);
