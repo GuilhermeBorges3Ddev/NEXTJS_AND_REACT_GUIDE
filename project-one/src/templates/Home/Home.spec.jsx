@@ -29,6 +29,20 @@ const handlers = [
           body: 'body3',
           url: 'img3.jpg',
         },
+        {
+          userId: 4,
+          id: 4,
+          title: 'title 4',
+          body: 'body4',
+          url: 'img4.jpg',
+        },
+        {
+          userId: 5,
+          id: 5,
+          title: 'title 5',
+          body: 'body5',
+          url: 'img5.jpg',
+        },
       ]),
     );
   }),
@@ -50,7 +64,14 @@ describe('<Home />', () => {
   it('should render search, posts and load more', async () => {
     render(<Home type="function" />);
     const noMorePosts = screen.getByText('No posts found :(');
+    expect.assertions(3);
     await waitForElementToBeRemoved(noMorePosts);
-    screen.debug();
+    setTimeout(() => {}, 7000);
+    const search = screen.getByPlaceholderText('Type your search...');
+    expect(search).toBeInTheDocument();
+    const images = screen.getAllByRole('img', { name: /title/i });
+    expect(images).toHaveLength(5);
+    const button = screen.getByRole('button', { name: /load more posts/i });
+    expect(button).toBeInTheDocument();
   });
 });
