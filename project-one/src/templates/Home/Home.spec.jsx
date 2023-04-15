@@ -118,4 +118,19 @@ describe('<Home />', () => {
     });
     expect(screen.getByText('No posts found :(')).toBeInTheDocument();
   });
+
+  it('should load more posts when the button this button is clicked', async () => {
+    render(<Home type="class" />);
+    const noMorePosts = screen.getByText('No posts found :(');
+    expect.assertions(2);
+    await waitForElementToBeRemoved(noMorePosts);
+    setTimeout(() => {}, 7000);
+    const button = screen.getByRole('button', { name: /load more posts/i });
+    act(() => {
+      userEvent.click(button);
+    });
+    setTimeout(() => {}, 3000);
+    expect(screen.getByRole('heading', { name: /title 6/i })).toBeInTheDocument();
+    expect(button).toBeDisabled();
+  });
 });
