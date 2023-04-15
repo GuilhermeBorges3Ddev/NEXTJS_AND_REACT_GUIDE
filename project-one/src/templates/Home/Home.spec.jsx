@@ -2,7 +2,8 @@ import React from 'react';
 import Home from '.';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { act, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 
 const handlers = [
   rest.get('*jsonplaceholder.typicode.com*', async (req, res, ctx) => {
@@ -43,6 +44,13 @@ const handlers = [
           body: 'body5',
           url: 'img5.jpg',
         },
+        {
+          userId: 6,
+          id: 6,
+          title: 'title 6',
+          body: 'body6',
+          url: 'img6.jpg',
+        },
       ]),
     );
   }),
@@ -73,5 +81,41 @@ describe('<Home />', () => {
     expect(images).toHaveLength(5);
     const button = screen.getByRole('button', { name: /load more posts/i });
     expect(button).toBeInTheDocument();
+  });
+
+  it('should search for posts', async () => {
+    render(<Home type="function" />);
+    const noMorePosts = screen.getByText('No posts found :(');
+    expect.assertions(18);
+    await waitForElementToBeRemoved(noMorePosts);
+    setTimeout(() => {}, 7000);
+    const search = screen.getByPlaceholderText('Type your search...');
+    expect(screen.getByRole('heading', { name: /title 1/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /title 2/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /title 3/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /title 4/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /title 5/i })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /title 6/i })).not.toBeInTheDocument();
+    act(() => {
+      userEvent.type(search, 'title 1');
+    });
+    expect(screen.getByRole('heading', { name: 'Searched value: title 1' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /title 2/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /title 3/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /title 4/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /title 5/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /title 6/i })).not.toBeInTheDocument();
+    act(() => {
+      userEvent.clear(search);
+    });
+    expect(screen.getByRole('heading', { name: /title 1/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /title 2/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /title 3/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /title 4/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /title 5/i })).toBeInTheDocument();
+    act(() => {
+      userEvent.type(search, 'qwnqnosnopadnenwweoqurb');
+    });
+    expect(screen.getByText('No posts found :(')).toBeInTheDocument();
   });
 });
