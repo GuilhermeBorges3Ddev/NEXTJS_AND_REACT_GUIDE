@@ -23,3 +23,7 @@ git remote add origin git@github.com:YOUR-PATH-FOR-GITHUB-SSH
 git add .
 git commit -m 'SOME MESSAGE'
 git push origin master
+
+# To configure Prettier with ESLint as dev dependencies:
+
+npm i -D prettier eslint-config-prettier eslint-plugin-prettier
