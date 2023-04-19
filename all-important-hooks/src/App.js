@@ -18,13 +18,13 @@ AppRouter.propTypes = {
 
 function AppFunction() {
   const [reverse, setReverse] = useState(false);
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(1);
   const reverseClass = reverse ? 'reverse' : '';
   const handleClick = () => {
     setReverse(!reverse);
   };
   const handleIncrement = () => {
-    setCounter(counter + 1);
+    setCounter((prevCounterValue) => prevCounterValue * 2);
   };
   return (
     <div className="App">
@@ -36,7 +36,7 @@ function AppFunction() {
         </button>
         <br />
         <button onClick={() => handleIncrement()} type="button">
-          Increment counter
+          Multiply my counter per two
         </button>
       </header>
     </div>
