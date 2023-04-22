@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import P from 'prop-types';
 import logo from './logo.svg';
 import './App.css';
@@ -17,28 +17,30 @@ AppRouter.propTypes = {
 };
 
 function AppFunction() {
-  const [reverse, setReverse] = useState(false);
-  const [counter, setCounter] = useState(1);
-  const reverseClass = reverse ? 'reverse' : '';
-  const handleClick = () => {
-    setReverse(!reverse);
-  };
-  const handleIncrement = () => {
-    setCounter((prevCounterValue) => prevCounterValue * 2);
-  };
+  const [counter, setCounter] = useState(0);
+  /*
+    componentDidUpdate - execute a code every component update
+    useEffect(() => {
+      alert('componentDidUpdate');
+    });
+  */
+  /*
+    componentDidMount - execute only when component mount
+    useEffect(() => {
+      document.querySelector('#wrapperAll').style.background = 'red';
+    }, []);
+  */
+  useEffect(() => {
+    console.log('counter', counter);
+    document.querySelector('#wrapperAll').classList.add('apply-shake');
+    setTimeout(() => {
+      document.querySelector('#wrapperAll').classList.remove('apply-shake');
+    }, 2000);
+  }, [counter]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className={`App-logo ${reverseClass}`} alt="logo" />
-        <h1>Counter: {counter}</h1>
-        <button onClick={() => handleClick()} type="button">
-          Reverse logo
-        </button>
-        <br />
-        <button onClick={() => handleIncrement()} type="button">
-          Multiply my counter per two
-        </button>
-      </header>
+    <div id="wrapperAll" className="App">
+      <h1>Counter value: {counter}</h1>
+      <button onClick={() => setCounter(counter + 1)}>+</button>
     </div>
   );
 }
