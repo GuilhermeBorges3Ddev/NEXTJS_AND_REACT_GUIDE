@@ -31,7 +31,6 @@ function AppFunction() {
     }, []);
   */
   useEffect(() => {
-    console.log('counter', counter);
     document.querySelector('#wrapperAll').classList.add('apply-shake');
     setTimeout(() => {
       document.querySelector('#wrapperAll').classList.remove('apply-shake');

@@ -19,6 +19,7 @@
     "format": "npx eslint ./src/**/*.js --fix",
     "test": "react-scripts test"
   },
+  "parser": "babel-eslint",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -38,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.18.6",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-jsx": "^0.1.0",
     "eslint-plugin-prettier": "^4.2.1",
