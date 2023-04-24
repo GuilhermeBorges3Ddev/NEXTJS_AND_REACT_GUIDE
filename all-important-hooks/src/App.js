@@ -32,9 +32,12 @@ function AppFunction() {
   */
   useEffect(() => {
     document.querySelector('#wrapperAll').classList.add('apply-shake');
-    setTimeout(() => {
-      document.querySelector('#wrapperAll').classList.remove('apply-shake');
-    }, 2000);
+    //The cleanup above is the componentWillUnmount
+    return () => {
+      setTimeout(() => {
+        document.querySelector('#wrapperAll').classList.remove('apply-shake');
+      }, 3000);
+    };
   }, [counter]);
   return (
     <div id="wrapperAll" className="App">
