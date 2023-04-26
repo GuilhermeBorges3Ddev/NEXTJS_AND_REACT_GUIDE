@@ -1,12 +1,7 @@
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState, useEffect, Component, useCallback } from 'react';
 import P from 'prop-types';
 import logo from './logo.svg';
 import './App.css';
-
-export default function AppRouter(props) {
-  if (props.type === 'function') return <AppFunction />;
-  return <AppClass />;
-}
 
 AppRouter.defaultProps = {
   type: 'function',
@@ -16,8 +11,29 @@ AppRouter.propTypes = {
   type: P.string.isRequired,
 };
 
+const IncrementButton = React.memo(function IncrementButton({ incrementUpdateFunction }) {
+  return <button onClick={() => incrementUpdateFunction(10)}>+</button>;
+});
+
+IncrementButton.propTypes = {
+  incrementUpdateFunction: P.func.isRequired,
+};
+
+IncrementButton.defaultProps = {
+  incrementUpdateFunction: () => {},
+};
+
+export default function AppRouter(props) {
+  if (props.type === 'function') return <AppFunction />;
+  return <AppClass />;
+}
+
 function AppFunction() {
   const [counter, setCounter] = useState(0);
+
+  const incrementUpdateFunction = useCallback((num) => {
+    setCounter((oldCounter) => oldCounter + num);
+  }, []);
   /*
     componentDidUpdate - execute a code every component update
     useEffect(() => {
@@ -36,13 +52,14 @@ function AppFunction() {
     return () => {
       setTimeout(() => {
         document.querySelector('#wrapperAll').classList.remove('apply-shake');
-      }, 3000);
+      }, 1000);
     };
   }, [counter]);
+
   return (
     <div id="wrapperAll" className="App">
       <h1>Counter value: {counter}</h1>
-      <button onClick={() => setCounter(counter + 1)}>+</button>
+      <IncrementButton incrementUpdateFunction={incrementUpdateFunction} />
     </div>
   );
 }
