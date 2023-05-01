@@ -1,5 +1,7 @@
-import React, { useState, useEffect, Component, useCallback } from 'react';
+import React, { useMemo, useState, useEffect, Component, useCallback } from 'react';
 import P from 'prop-types';
+import { IncrementButton } from './components/IncrementButton';
+import { Posts } from './components/Posts';
 import logo from './logo.svg';
 import './App.css';
 
@@ -11,18 +13,6 @@ AppRouter.propTypes = {
   type: P.string.isRequired,
 };
 
-const IncrementButton = React.memo(function IncrementButton({ incrementUpdateFunction }) {
-  return <button onClick={() => incrementUpdateFunction(10)}>+</button>;
-});
-
-IncrementButton.propTypes = {
-  incrementUpdateFunction: P.func.isRequired,
-};
-
-IncrementButton.defaultProps = {
-  incrementUpdateFunction: () => {},
-};
-
 export default function AppRouter(props) {
   if (props.type === 'function') return <AppFunction />;
   return <AppClass />;
@@ -30,6 +20,8 @@ export default function AppRouter(props) {
 
 function AppFunction() {
   const [counter, setCounter] = useState(0);
+  const [posts, setPosts] = useState([]);
+  const [value, setValue] = useState('');
 
   const incrementUpdateFunction = useCallback((num) => {
     setCounter((oldCounter) => oldCounter + num);
@@ -56,10 +48,30 @@ function AppFunction() {
     };
   }, [counter]);
 
+  useEffect(() => {
+    setTimeout(function () {
+      fetch('https://jsonplaceholder.typicode.com/posts')
+        .then((response) => response.json())
+        .then((r) => setPosts(r));
+    }, 5000);
+  }, []);
+
+  const incrementButtonCall = useMemo(() => {
+    return <IncrementButton incrementUpdateFunction={incrementUpdateFunction} />;
+  }, [incrementUpdateFunction]);
+
   return (
     <div id="wrapperAll" className="App">
+      <p>
+        <input type="search" value={value} onChange={(e) => setValue(e.target.value)} />
+      </p>
       <h1>Counter value: {counter}</h1>
-      <IncrementButton incrementUpdateFunction={incrementUpdateFunction} />
+      {incrementButtonCall}
+      <hr id="counterSeparator" />
+      {useMemo(() => {
+        return posts.length > 0 && posts.map((post) => <Posts key={post.id} post={post} />);
+      }, [posts])}
+      {posts.length <= 0 && <p>Posts not loaded yet...</p>}
     </div>
   );
 }

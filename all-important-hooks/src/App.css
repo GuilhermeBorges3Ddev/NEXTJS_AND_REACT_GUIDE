@@ -30,6 +30,10 @@
   color: white;
 }
 
+#counterSeparator {
+  margin: 2rem 0;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
