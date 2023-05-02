@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, Component, useCallback } from 'react';
+import React, { Component, useEffect, useCallback, useMemo, useRef, useState } from 'react';
 import P from 'prop-types';
 import { IncrementButton } from './components/IncrementButton';
 import { Posts } from './components/Posts';
@@ -23,15 +23,12 @@ function AppFunction() {
   const [posts, setPosts] = useState([]);
   const [value, setValue] = useState('');
 
+  const input = useRef(null);
+  const componentDidUpdateTimes = useRef(0);
+
   const incrementUpdateFunction = useCallback((num) => {
     setCounter((oldCounter) => oldCounter + num);
   }, []);
-  /*
-    componentDidUpdate - execute a code every component update
-    useEffect(() => {
-      alert('componentDidUpdate');
-    });
-  */
   /*
     componentDidMount - execute only when component mount
     useEffect(() => {
@@ -49,27 +46,40 @@ function AppFunction() {
   }, [counter]);
 
   useEffect(() => {
-    setTimeout(function () {
-      fetch('https://jsonplaceholder.typicode.com/posts')
-        .then((response) => response.json())
-        .then((r) => setPosts(r));
-    }, 5000);
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then((response) => response.json())
+      .then((r) => setPosts(r));
   }, []);
+
+  useEffect(() => {
+    componentDidUpdateTimes.current++;
+    console.warn(`Page was rendered ${componentDidUpdateTimes.current} times`);
+  });
+
+  useEffect(() => {
+    if (value?.length > 0) input.current.focus();
+  }, [value]);
 
   const incrementButtonCall = useMemo(() => {
     return <IncrementButton incrementUpdateFunction={incrementUpdateFunction} />;
   }, [incrementUpdateFunction]);
 
+  const handleInputTitleClick = (inputTitleValue) => {
+    setValue(inputTitleValue);
+  };
+
   return (
     <div id="wrapperAll" className="App">
       <p>
-        <input type="search" value={value} onChange={(e) => setValue(e.target.value)} />
+        <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
       </p>
       <h1>Counter value: {counter}</h1>
       {incrementButtonCall}
       <hr id="counterSeparator" />
       {useMemo(() => {
-        return posts.length > 0 && posts.map((post) => <Posts key={post.id} post={post} />);
+        return (
+          posts.length > 0 && posts.map((post) => <Posts key={post.id} post={post} onClick={handleInputTitleClick} />)
+        );
       }, [posts])}
       {posts.length <= 0 && <p>Posts not loaded yet...</p>}
     </div>
