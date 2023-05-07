@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useCallback, useMemo, useRef, useState } from 'react';
 import P from 'prop-types';
+import { AppWrapper } from './components/AppWrapper';
 import { IncrementButton } from './components/IncrementButton';
 import { Posts } from './components/Posts';
 import logo from './logo.svg';
@@ -12,6 +13,13 @@ AppRouter.defaultProps = {
 AppRouter.propTypes = {
   type: P.string.isRequired,
 };
+
+const globalState = {
+  title: 'Title of the context',
+  counter: 0,
+};
+
+export const GlobalContext = React.createContext();
 
 export default function AppRouter(props) {
   if (props.type === 'function') return <AppFunction />;
@@ -75,7 +83,11 @@ function AppFunction() {
       </p>
       <h1>Counter value: {counter}</h1>
       {incrementButtonCall}
-      <hr id="counterSeparator" />
+      <hr className="counterSeparatorOne" />
+      <GlobalContext.Provider value={globalState}>
+        <AppWrapper />
+      </GlobalContext.Provider>
+      <hr className="counterSeparatorTwo" />
       {useMemo(() => {
         return (
           posts.length > 0 && posts.map((post) => <Posts key={post.id} post={post} onClick={handleInputTitleClick} />)

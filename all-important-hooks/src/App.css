@@ -7,6 +7,11 @@
   pointer-events: none;
 }
 
+.AppWrapper {
+  background: paleturquoise;
+  text-align: center;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -30,8 +35,13 @@
   color: white;
 }
 
-#counterSeparator {
-  margin: 2rem 0;
+.counterSeparatorOne {
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+
+.counterSeparatorTwo {
+  margin: 0rem;
 }
 
 @keyframes App-logo-spin {
