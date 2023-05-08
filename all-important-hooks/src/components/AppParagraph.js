@@ -9,11 +9,13 @@ export function AppParagraph() {
     fontWeight: '0.75rem',
     backgroundColor: '#122121',
     color: 'white',
+    userSelect: 'none',
   };
-  const contextValue = useContext(GlobalContext);
+  const stateReceived = useContext(GlobalContext);
+  const { contextState, setContextState } = stateReceived;
   return (
-    <p style={AppHeaderStyles}>
-      <u>Context Body</u>: {contextValue.body}
+    <p style={AppHeaderStyles} onClick={() => setContextState({ ...contextState, counter: contextState.counter + 1 })}>
+      <u>Context Body</u>: {contextState.body}
     </p>
   );
 }

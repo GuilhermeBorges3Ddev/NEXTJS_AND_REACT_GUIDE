@@ -31,6 +31,7 @@ function AppFunction() {
   const [counter, setCounter] = useState(0);
   const [posts, setPosts] = useState([]);
   const [value, setValue] = useState('');
+  const [contextState, setContextState] = useState(globalState);
 
   const input = useRef(null);
   const componentDidUpdateTimes = useRef(0);
@@ -85,7 +86,7 @@ function AppFunction() {
       <h1>Counter value: {counter}</h1>
       {incrementButtonCall}
       <hr className="counterSeparatorOne" />
-      <GlobalContext.Provider value={globalState}>
+      <GlobalContext.Provider value={{ contextState, setContextState }}>
         <AppWrapper />
       </GlobalContext.Provider>
       <hr className="counterSeparatorTwo" />
