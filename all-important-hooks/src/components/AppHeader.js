@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
-import { GlobalContext } from '../App';
+import { AppGlobalContext } from '../contexts/AppContext';
 
 // eslint-disable-next-line
 export function AppHeader() {
   const AppHeaderStyles = { margin: 0, padding: 20, backgroundColor: '#122121', color: 'white', userSelect: 'none' };
-  const stateReceived = useContext(GlobalContext);
-  const { contextState, setContextState } = stateReceived;
+  const stateReceived = useContext(AppGlobalContext);
+  const { appState, setAppState } = stateReceived;
   return (
-    <h1 onClick={() => setContextState((s) => ({ ...s, counter: s.counter + 1 }))} style={AppHeaderStyles}>
-      {contextState.title + `\n<<Clicked: ${contextState.counter} times>>`}
+    <h1 onClick={() => setAppState((s) => ({ ...s, counter: s.counter + 1 }))} style={AppHeaderStyles}>
+      {appState.title + `\n<<Clicked: ${appState.counter} times>>`}
     </h1>
   );
 }

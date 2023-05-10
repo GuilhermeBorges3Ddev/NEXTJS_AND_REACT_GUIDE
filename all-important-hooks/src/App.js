@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useCallback, useMemo, useRef, useState } from 'react';
 import P from 'prop-types';
+import { AppContext } from './contexts/AppContext';
 import { AppWrapper } from './components/AppWrapper';
 import { IncrementButton } from './components/IncrementButton';
 import { Posts } from './components/Posts';
@@ -14,14 +15,6 @@ AppRouter.propTypes = {
   type: P.string.isRequired,
 };
 
-const globalState = {
-  title: 'Title of the context',
-  body: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus provident corporis dolorum ipsa velit repellat dicta.',
-  counter: 0,
-};
-
-export const GlobalContext = React.createContext();
-
 export default function AppRouter(props) {
   if (props.type === 'function') return <AppFunction />;
   return <AppClass />;
@@ -31,7 +24,6 @@ function AppFunction() {
   const [counter, setCounter] = useState(0);
   const [posts, setPosts] = useState([]);
   const [value, setValue] = useState('');
-  const [contextState, setContextState] = useState(globalState);
 
   const input = useRef(null);
   const componentDidUpdateTimes = useRef(0);
@@ -86,9 +78,9 @@ function AppFunction() {
       <h1>Counter value: {counter}</h1>
       {incrementButtonCall}
       <hr className="counterSeparatorOne" />
-      <GlobalContext.Provider value={{ contextState, setContextState }}>
+      <AppContext>
         <AppWrapper />
-      </GlobalContext.Provider>
+      </AppContext>
       <hr className="counterSeparatorTwo" />
       {useMemo(() => {
         return (
