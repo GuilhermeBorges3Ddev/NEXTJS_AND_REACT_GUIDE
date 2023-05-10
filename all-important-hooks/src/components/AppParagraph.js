@@ -12,9 +12,9 @@ export function AppParagraph() {
     userSelect: 'none',
   };
   const stateReceived = useContext(AppGlobalContext);
-  const { appState, setAppState } = stateReceived;
+  const { appState, AppContextCounterSetter } = stateReceived;
   return (
-    <p style={AppHeaderStyles} onClick={() => setAppState({ ...appState, counter: appState.counter + 1 })}>
+    <p style={AppHeaderStyles} onClick={() => AppContextCounterSetter(1)}>
       <u>Context Body</u>: {appState.body}
     </p>
   );

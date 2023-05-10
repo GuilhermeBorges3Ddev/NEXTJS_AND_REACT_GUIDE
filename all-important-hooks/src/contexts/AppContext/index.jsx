@@ -6,5 +6,9 @@ export const AppGlobalContext = createContext();
 //eslint-disable-next-line
 export const AppContext = ({ children }) => {
   const [appState, setAppState] = useState(globalState);
-  return <AppGlobalContext.Provider value={{ appState, setAppState }}>{children}</AppGlobalContext.Provider>;
+  const AppContextTitleSetter = (newTitle) => setAppState({ ...appState, title: newTitle });
+  const AppContextBodySetter = (newBody) => setAppState({ ...appState, body: newBody });
+  const AppContextCounterSetter = (increment) => setAppState({ ...appState, counter: appState.counter + increment });
+  const providerObject = { appState, AppContextTitleSetter, AppContextBodySetter, AppContextCounterSetter };
+  return <AppGlobalContext.Provider value={providerObject}>{children}</AppGlobalContext.Provider>;
 };
