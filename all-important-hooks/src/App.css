@@ -2,6 +2,34 @@
   text-align: center;
 }
 
+.AppMenu {
+  display: flex;
+  background-color: lightsteelblue;
+  height: 10%;
+  width: 100%;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  margin: 0 0 3% 0;
+  padding: 3rem 0;
+  box-sizing: content-box;
+}
+
+.AppMenu > span {
+  display: inherit;
+  cursor: pointer;
+  font-weight: 700;
+  flex-direction: column;
+  width: 10%;
+  margin: 0 12%;
+  color: black;
+}
+
+.AppMenu > span:hover {
+  border-bottom: 2px solid black;
+  box-sizing: border-box;
+  padding: 2px 0 0 0;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

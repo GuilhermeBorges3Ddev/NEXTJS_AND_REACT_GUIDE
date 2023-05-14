@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useCallback, useMemo, useRef, useState } from 'react';
+import React, { Component, useEffect, useCallback, useMemo, useReducer, useRef, useState } from 'react';
 import P from 'prop-types';
 import { AppContext } from './contexts/AppContext';
 import { AppWrapper } from './components/AppWrapper';
@@ -21,9 +21,42 @@ export default function AppRouter(props) {
 }
 
 function AppFunction() {
+  const MENU_STATE = {
+    menuNavLeftItem: 'Search',
+    menuNavCenterItem: 'Context Counter',
+    menuNavRightItem: 'Items from API',
+  };
+
+  const CLICKDATE_FOR_APPMENU_DISPATCHER = new Date().toLocaleString('pt-BR');
+
+  const menuReducerFunction = (menuState, menuAction) => {
+    switch (menuAction.type) {
+      case 'changeLeftItem':
+        alert('Left menu item clicked on: ' + menuAction.payload);
+        return {
+          ...menuState,
+          menuNavLeftItem: menuState.menuNavLeftItem.split('').reverse().join(''),
+        };
+      case 'changeCenterItem':
+        alert('Center menu item clicked on: ' + menuAction.payload);
+        return {
+          ...menuState,
+          menuNavCenterItem: menuState.menuNavCenterItem.split('').reverse().join(''),
+        };
+      case 'changeRightItem':
+        alert('Right menu item clicked on: ' + menuAction.payload);
+        return {
+          ...menuState,
+          menuNavRightItem: menuState.menuNavRightItem.split('').reverse().join(''),
+        };
+    }
+    return { ...menuState };
+  };
+
   const [counter, setCounter] = useState(0);
   const [posts, setPosts] = useState([]);
   const [value, setValue] = useState('');
+  const [menuState, menuDispatcher] = useReducer(menuReducerFunction, MENU_STATE);
 
   const input = useRef(null);
   const componentDidUpdateTimes = useRef(0);
@@ -72,6 +105,17 @@ function AppFunction() {
 
   return (
     <div id="wrapperAll" className="App">
+      <div className="AppMenu">
+        <span onClick={() => menuDispatcher({ type: 'changeLeftItem', payload: CLICKDATE_FOR_APPMENU_DISPATCHER })}>
+          {menuState.menuNavLeftItem}
+        </span>
+        <span onClick={() => menuDispatcher({ type: 'changeCenterItem', payload: CLICKDATE_FOR_APPMENU_DISPATCHER })}>
+          {menuState.menuNavCenterItem}
+        </span>
+        <span onClick={() => menuDispatcher({ type: 'changeRightItem', payload: CLICKDATE_FOR_APPMENU_DISPATCHER })}>
+          {menuState.menuNavRightItem}
+        </span>
+      </div>
       <p>
         <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
       </p>
