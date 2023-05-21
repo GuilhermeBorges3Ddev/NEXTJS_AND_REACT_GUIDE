@@ -1,14 +1,14 @@
 import React, { Component, useEffect, useCallback, useMemo, useRef, useState } from 'react';
 import P from 'prop-types';
-import { useInterval } from './hooks/useInterval';
-import { AppContext } from './contexts/AppContext';
-import { AppMenuContext } from './contexts/AppMenuContext';
-import { AppWrapper } from './components/AppWrapper';
-import { AppMenu } from './components/AppMenu';
-import { IncrementButton } from './components/IncrementButton';
-import { Posts } from './components/Posts';
-import logo from './logo.svg';
-import './App.css';
+import { useInterval } from '../../hooks/useInterval';
+import { AppContext } from '../../contexts/AppContext';
+import { AppMenuContext } from '../../contexts/AppMenuContext';
+import { AppWrapper } from '../../components/AppWrapper';
+import { AppMenu } from '../../components/AppMenu';
+import { IncrementButton } from '../../components/IncrementButton';
+import { Posts } from '../../components/Posts';
+import logo from '../../logo.svg';
+import './styles.css';
 
 AppRouter.defaultProps = {
   type: 'function',
