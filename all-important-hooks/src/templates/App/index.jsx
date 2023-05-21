@@ -2,7 +2,7 @@ import React, { Component, useEffect, useCallback, useMemo, useRef, useState } f
 import P from 'prop-types';
 import { useInterval } from '../../hooks/useInterval';
 import { AppContext } from '../../contexts/AppContext';
-import { AppMenuContext } from '../../contexts/AppMenuContext';
+import { AppMenuProvider } from '../../contexts/AppMenuProvider';
 import { AppWrapper } from '../../components/AppWrapper';
 import { AppMenu } from '../../components/AppMenu';
 import { IncrementButton } from '../../components/IncrementButton';
@@ -79,9 +79,9 @@ function AppFunction() {
 
   return (
     <div id="wrapperAll" className="App">
-      <AppMenuContext>
+      <AppMenuProvider>
         <AppMenu />
-      </AppMenuContext>
+      </AppMenuProvider>
       <p>
         <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
       </p>
