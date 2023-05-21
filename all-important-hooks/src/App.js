@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useCallback, useMemo, useRef, useState } from 'react';
 import P from 'prop-types';
+import { useInterval } from './hooks/useInterval';
 import { AppContext } from './contexts/AppContext';
 import { AppMenuContext } from './contexts/AppMenuContext';
 import { AppWrapper } from './components/AppWrapper';
@@ -24,6 +25,7 @@ export default function AppRouter(props) {
 
 function AppFunction() {
   const [counter, setCounter] = useState(0);
+  const [displayTime, setDisplayTime] = useState(1000);
   const [posts, setPosts] = useState([]);
   const [value, setValue] = useState('');
 
@@ -57,7 +59,8 @@ function AppFunction() {
 
   useEffect(() => {
     componentDidUpdateTimes.current++;
-    console.warn(`Page was rendered ${componentDidUpdateTimes.current} times`);
+    if (componentDidUpdateTimes && componentDidUpdateTimes > 1000)
+      console.warn(`Page was rendered ${componentDidUpdateTimes.current} times`);
   });
 
   useEffect(() => {
@@ -72,6 +75,8 @@ function AppFunction() {
     setValue(inputTitleValue);
   };
 
+  useInterval(() => setDisplayTime((lastTimeValue) => lastTimeValue + 1000), 1000);
+
   return (
     <div id="wrapperAll" className="App">
       <AppMenuContext>
@@ -81,6 +86,7 @@ function AppFunction() {
         <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
       </p>
       <h1>Counter value: {counter}</h1>
+      <h2>The application is running by: {displayTime / 1000} seconds</h2>
       {incrementButtonCall}
       <hr className="counterSeparatorOne" />
       <AppContext>
