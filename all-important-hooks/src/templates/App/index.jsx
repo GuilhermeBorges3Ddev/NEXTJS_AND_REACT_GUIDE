@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useCallback, useMemo, useRef, useState } from 'react';
 import P from 'prop-types';
 import { useInterval } from '../../hooks/useInterval';
-import { AppContext } from '../../contexts/AppContext';
+import { AppContext } from '../../contexts/AppProvider';
 import { AppMenuProvider } from '../../contexts/AppMenuProvider';
 import { AppWrapper } from '../../components/AppWrapper';
 import { AppMenu } from '../../components/AppMenu';

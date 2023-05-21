@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AppGlobalContext } from '../contexts/AppContext';
+import { AppGlobalContext } from '../contexts/AppProvider/context';
 
 // eslint-disable-next-line
 export function AppParagraph() {
@@ -12,9 +12,9 @@ export function AppParagraph() {
     userSelect: 'none',
   };
   const stateReceived = useContext(AppGlobalContext);
-  const { appState, AppContextCounterSetter } = stateReceived;
+  const { appState, setAppState, AppContextCounterSetter } = stateReceived;
   return (
-    <p style={AppHeaderStyles} onClick={() => AppContextCounterSetter(1)}>
+    <p style={AppHeaderStyles} onClick={() => AppContextCounterSetter(1, appState, setAppState)}>
       <u>Context Body</u>: {appState.body}
     </p>
   );
