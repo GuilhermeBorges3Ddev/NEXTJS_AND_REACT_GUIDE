@@ -1,9 +1,10 @@
-import P from 'prop-types';
 import { useReducer } from 'react';
-import { globalMenuInitialState } from './data';
+import P from 'prop-types';
+
+import { changeCenterMenuItem, changeLeftMenuItem, changeRightMenuItem } from './actions';
 import { AppMenuContextData } from './context';
+import { globalMenuInitialState } from './data';
 import { menuReducerFunction } from './reducers';
-import { changeLeftMenuItem, changeCenterMenuItem, changeRightMenuItem } from './actions';
 
 AppMenuProvider.defaultProps = {
   children: <></>,

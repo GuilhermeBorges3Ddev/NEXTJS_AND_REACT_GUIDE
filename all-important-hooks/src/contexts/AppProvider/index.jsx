@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { globalState } from './data';
+
+import { AppContextBodySetter, AppContextCounterSetter, AppContextTitleSetter } from './actions';
 import { AppGlobalContext } from './context';
-import { AppContextTitleSetter, AppContextBodySetter, AppContextCounterSetter } from './actions';
+import { globalState } from './data';
 
 //eslint-disable-next-line
 export const AppContext = ({ children }) => {
