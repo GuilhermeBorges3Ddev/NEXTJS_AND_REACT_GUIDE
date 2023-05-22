@@ -7,6 +7,7 @@ import { IncrementButton } from '../../components/IncrementButton';
 import { Posts } from '../../components/Posts';
 import { AppMenuProvider } from '../../contexts/AppMenuProvider';
 import { AppContext } from '../../contexts/AppProvider';
+import { PostsProvider } from '../../contexts/PostsProvider';
 import { useInterval } from '../../hooks/useInterval';
 import logo from '../../logo.svg';
 
@@ -28,7 +29,7 @@ export default function AppRouter(props) {
 function AppFunction() {
   const [counter, setCounter] = useState(0);
   const [displayTime, setDisplayTime] = useState(1000);
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
   const [value, setValue] = useState('');
 
   const input = useRef(null);
@@ -53,11 +54,11 @@ function AppFunction() {
     };
   }, [counter]);
 
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then((response) => response.json())
-      .then((r) => setPosts(r));
-  }, []);
+  // useEffect(() => {
+  //   fetch('https://jsonplaceholder.typicode.com/posts')
+  //     .then((response) => response.json())
+  //     .then((r) => setPosts(r));
+  // }, []);
 
   useEffect(() => {
     componentDidUpdateTimes.current++;
@@ -80,28 +81,30 @@ function AppFunction() {
   useInterval(() => setDisplayTime((lastTimeValue) => lastTimeValue + 1000), 1000);
 
   return (
-    <div id="wrapperAll" className="App">
-      <AppMenuProvider>
-        <AppMenu />
-      </AppMenuProvider>
-      <p>
-        <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
-      </p>
-      <h1>Counter value: {counter}</h1>
-      <h2>The application is running by: {displayTime / 1000} seconds</h2>
-      {incrementButtonCall}
-      <hr className="counterSeparatorOne" />
-      <AppContext>
-        <AppWrapper />
-      </AppContext>
-      <hr className="counterSeparatorTwo" />
-      {useMemo(() => {
+    <PostsProvider>
+      <div id="wrapperAll" className="App">
+        <AppMenuProvider>
+          <AppMenu />
+        </AppMenuProvider>
+        <p>
+          <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
+        </p>
+        <h1>Counter value: {counter}</h1>
+        <h2>The application is running by: {displayTime / 1000} seconds</h2>
+        {incrementButtonCall}
+        <hr className="counterSeparatorOne" />
+        <AppContext>
+          <AppWrapper />
+        </AppContext>
+        <hr className="counterSeparatorTwo" />
+        {/* {useMemo(() => {
         return (
           posts.length > 0 && posts.map((post) => <Posts key={post.id} post={post} onClick={handleInputTitleClick} />)
         );
       }, [posts])}
-      {posts.length <= 0 && <p>Posts not loaded yet...</p>}
-    </div>
+      {posts.length <= 0 && <p>Posts not loaded yet...</p>} */}
+      </div>
+    </PostsProvider>
   );
 }
 
