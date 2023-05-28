@@ -1,4 +1,5 @@
 import React, { Component, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext } from 'react';
 import P from 'prop-types';
 
 import { AppMenu } from '../../components/AppMenu';
@@ -8,6 +9,8 @@ import { Posts } from '../../components/Posts';
 import { AppMenuProvider } from '../../contexts/AppMenuProvider';
 import { AppContext } from '../../contexts/AppProvider';
 import { PostsProvider } from '../../contexts/PostsProvider';
+import * as Actions from '../../contexts/PostsProvider/actions';
+import { PostsContext } from '../../contexts/PostsProvider/context';
 import { useInterval } from '../../hooks/useInterval';
 import logo from '../../logo.svg';
 
@@ -22,18 +25,25 @@ AppRouter.propTypes = {
 };
 
 export default function AppRouter(props) {
-  if (props.type === 'function') return <AppFunction />;
+  if (props.type === 'function')
+    return (
+      <PostsProvider>
+        <AppFunction />
+      </PostsProvider>
+    );
   return <AppClass />;
 }
 
 function AppFunction() {
   const [counter, setCounter] = useState(0);
   const [displayTime, setDisplayTime] = useState(1000);
-  // const [posts, setPosts] = useState([]);
+
   const [value, setValue] = useState('');
 
   const input = useRef(null);
   const componentDidUpdateTimes = useRef(0);
+  const postsContext = useContext(PostsContext);
+  const { postsState, postsDispatch } = postsContext;
 
   const incrementUpdateFunction = useCallback((num) => {
     setCounter((oldCounter) => oldCounter + num);
@@ -54,12 +64,6 @@ function AppFunction() {
     };
   }, [counter]);
 
-  // useEffect(() => {
-  //   fetch('https://jsonplaceholder.typicode.com/posts')
-  //     .then((response) => response.json())
-  //     .then((r) => setPosts(r));
-  // }, []);
-
   useEffect(() => {
     componentDidUpdateTimes.current++;
     if (componentDidUpdateTimes && componentDidUpdateTimes > 1000)
@@ -69,6 +73,11 @@ function AppFunction() {
   useEffect(() => {
     if (value?.length > 0) input.current.focus();
   }, [value]);
+
+  useEffect(() => {
+    Actions.loadPosts(postsDispatch);
+    console.log('called');
+  }, [postsDispatch]);
 
   const incrementButtonCall = useMemo(() => {
     return <IncrementButton incrementUpdateFunction={incrementUpdateFunction} />;
@@ -81,30 +90,29 @@ function AppFunction() {
   useInterval(() => setDisplayTime((lastTimeValue) => lastTimeValue + 1000), 1000);
 
   return (
-    <PostsProvider>
-      <div id="wrapperAll" className="App">
-        <AppMenuProvider>
-          <AppMenu />
-        </AppMenuProvider>
-        <p>
-          <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
-        </p>
-        <h1>Counter value: {counter}</h1>
-        <h2>The application is running by: {displayTime / 1000} seconds</h2>
-        {incrementButtonCall}
-        <hr className="counterSeparatorOne" />
-        <AppContext>
-          <AppWrapper />
-        </AppContext>
-        <hr className="counterSeparatorTwo" />
-        {/* {useMemo(() => {
+    <div id="wrapperAll" className="App">
+      <AppMenuProvider>
+        <AppMenu />
+      </AppMenuProvider>
+      <p>
+        <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
+      </p>
+      <h1>Counter value: {counter}</h1>
+      <h2>The application is running by: {displayTime / 1000} seconds</h2>
+      {incrementButtonCall}
+      <hr className="counterSeparatorOne" />
+      <AppContext>
+        <AppWrapper />
+      </AppContext>
+      <hr className="counterSeparatorTwo" />
+      {useMemo(() => {
         return (
-          posts.length > 0 && posts.map((post) => <Posts key={post.id} post={post} onClick={handleInputTitleClick} />)
+          postsState.posts.length > 0 &&
+          postsState.posts.map((post) => <Posts key={post.id} post={post} onClick={handleInputTitleClick} />)
         );
-      }, [posts])}
-      {posts.length <= 0 && <p>Posts not loaded yet...</p>} */}
-      </div>
-    </PostsProvider>
+      }, [postsState])}
+      {postsState.loading && <p>Posts not loaded yet...</p>}
+    </div>
   );
 }
 

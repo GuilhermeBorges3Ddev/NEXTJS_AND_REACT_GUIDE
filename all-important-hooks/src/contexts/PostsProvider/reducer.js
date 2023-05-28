@@ -1,12 +1,13 @@
 import * as types from './types';
 
 export const postsReducer = (postState, postAction) => {
-  console.log('postAction.type', postAction.type);
   switch (postAction.type) {
     case types.POSTS_SUCCESS: {
-      return { ...postState, posts: postAction.payload };
+      return { ...postState, posts: postAction.payload, loading: false };
+    }
+    case types.POSTS_LOADING: {
+      return { ...postState, loading: true };
     }
   }
-  console.log('postAction.type not found');
-  return postState;
+  return { ...postState };
 };

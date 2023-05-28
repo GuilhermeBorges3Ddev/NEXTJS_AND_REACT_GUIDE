@@ -1,7 +1,14 @@
+import P from 'prop-types';
+
 import * as types from './types';
 
 export const loadPosts = async (dispatch) => {
-  const postsRaw = fetch('https://jsonplaceholder.typicode.com/posts');
-  const posts = (await postsRaw).json();
+  dispatch({ type: types.POSTS_LOADING });
+  const postsRaw = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const posts = await postsRaw.json();
   dispatch({ type: types.POSTS_SUCCESS, payload: posts });
+};
+
+loadPosts.propTypes = {
+  dispatch: P.func.isRequired,
 };
