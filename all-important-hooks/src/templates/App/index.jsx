@@ -11,6 +11,9 @@ import { AppContext } from '../../contexts/AppProvider';
 import { PostsProvider } from '../../contexts/PostsProvider';
 import * as Actions from '../../contexts/PostsProvider/actions';
 import { PostsContext } from '../../contexts/PostsProvider/context';
+import SampleProvider from '../../contexts/SampleProvider';
+import { changeForNewBg, returnToOldBg } from '../../contexts/SampleProvider/actions';
+import { SampleContext } from '../../contexts/SampleProvider/context';
 import { useInterval } from '../../hooks/useInterval';
 import logo from '../../logo.svg';
 
@@ -28,7 +31,9 @@ export default function AppRouter(props) {
   if (props.type === 'function')
     return (
       <PostsProvider>
-        <AppFunction />
+        <SampleProvider>
+          <AppFunction />
+        </SampleProvider>
       </PostsProvider>
     );
   return <AppClass />;
@@ -42,8 +47,10 @@ function AppFunction() {
 
   const input = useRef(null);
   const componentDidUpdateTimes = useRef(0);
+  const sampleContext = useContext(SampleContext);
   const postsContext = useContext(PostsContext);
   const { postsState, postsDispatch } = postsContext;
+  const { sampleState, sampleDispatcher } = sampleContext;
 
   const incrementUpdateFunction = useCallback((num) => {
     setCounter((oldCounter) => oldCounter + num);
@@ -76,7 +83,6 @@ function AppFunction() {
 
   useEffect(() => {
     Actions.loadPosts(postsDispatch);
-    console.log('called');
   }, [postsDispatch]);
 
   const incrementButtonCall = useMemo(() => {
@@ -90,15 +96,29 @@ function AppFunction() {
   useInterval(() => setDisplayTime((lastTimeValue) => lastTimeValue + 1000), 1000);
 
   return (
-    <div id="wrapperAll" className="App">
+    <div id="wrapperAll" className="App" style={{ background: sampleState.background, color: sampleState.color }}>
       <AppMenuProvider>
         <AppMenu />
       </AppMenuProvider>
+      <div>
+        <button
+          style={{ marginRight: '10px', background: 'blue', color: 'white' }}
+          onClick={() => returnToOldBg(sampleDispatcher)}
+        >
+          Light theme
+        </button>
+        <button
+          style={{ marginRight: '10px', background: 'black', color: 'white' }}
+          onClick={() => changeForNewBg(sampleDispatcher)}
+        >
+          Dark theme
+        </button>
+      </div>
       <p>
         <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
       </p>
-      <h1>Counter value: {counter}</h1>
-      <h2>The application is running by: {displayTime / 1000} seconds</h2>
+      <h1 style={{ color: 'antiquewhite' }}>Counter value: {counter}</h1>
+      <h2 style={{ color: 'antiquewhite' }}>The application is running by: {displayTime / 1000} seconds</h2>
       {incrementButtonCall}
       <hr className="counterSeparatorOne" />
       <AppContext>

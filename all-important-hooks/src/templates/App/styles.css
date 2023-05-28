@@ -4,7 +4,7 @@
 
 .AppMenu {
   display: flex;
-  background-color: lightsteelblue;
+  background-color: brown !important;
   height: 10%;
   width: 100%;
   flex-wrap: nowrap;

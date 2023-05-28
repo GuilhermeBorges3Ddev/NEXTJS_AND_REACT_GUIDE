@@ -7,7 +7,7 @@ export const Posts = ({ post, onClick }) => {
       <h1 style={{ color: 'darkblue', cursor: 'pointer' }} onClick={() => onClick(post.title)}>
         {post.title}
       </h1>
-      <p>{post.body}</p>
+      <p style={{ color: 'azure' }}>{post.body}</p>
     </div>
   );
 };
