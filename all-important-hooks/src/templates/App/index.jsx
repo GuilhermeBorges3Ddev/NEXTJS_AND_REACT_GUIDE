@@ -15,6 +15,7 @@ import SampleProvider from '../../contexts/SampleProvider';
 import { changeForNewBg, returnToOldBg } from '../../contexts/SampleProvider/actions';
 import { SampleContext } from '../../contexts/SampleProvider/context';
 import { useInterval } from '../../hooks/useInterval';
+import { useTimer } from '../../hooks/useTimer';
 import logo from '../../logo.svg';
 
 import './styles.css';
@@ -118,7 +119,13 @@ function AppFunction() {
         <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
       </p>
       <h1 style={{ color: 'antiquewhite' }}>Counter value: {counter}</h1>
-      <h2 style={{ color: 'antiquewhite' }}>The application is running by: {displayTime / 1000} seconds</h2>
+      <h2 style={{ color: 'antiquewhite' }}>
+        The application is running by:
+        <br />
+        <i>
+          <b>{useTimer(displayTime / 1000)}</b>
+        </i>
+      </h2>
       {incrementButtonCall}
       <hr className="counterSeparatorOne" />
       <AppContext>
