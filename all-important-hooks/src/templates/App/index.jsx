@@ -1,5 +1,4 @@
-import React, { Component, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useContext } from 'react';
+import React, { Component, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import P from 'prop-types';
 
 import { AppMenu } from '../../components/AppMenu';
