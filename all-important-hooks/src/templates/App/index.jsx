@@ -1,4 +1,13 @@
-import React, { Component, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  Component,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import P from 'prop-types';
 
 import { AppMenu } from '../../components/AppMenu';
@@ -61,7 +70,7 @@ function AppFunction() {
       document.querySelector('#wrapperAll').style.background = 'red';
     }, []);
   */
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.querySelector('#wrapperAll').classList.add('apply-shake');
     //The cleanup above is the componentWillUnmount
     return () => {
