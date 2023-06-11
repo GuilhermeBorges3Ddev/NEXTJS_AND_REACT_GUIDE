@@ -88,7 +88,7 @@ function AppFunction() {
   });
 
   useEffect(() => {
-    if (value?.length > 0) input.current.focus();
+    if (value?.length > 0 && input?.current) input.current.focus();
   }, [value]);
 
   useEffect(() => {
@@ -101,7 +101,7 @@ function AppFunction() {
 
   const displayedInputCall = useMemo(() => {
     return <DisplayedInput value={value} setValue={setValue} ref={input} />;
-  }, [value, setValue, input]);
+  }, [value]);
 
   const handleInputTitleClick = (inputTitleValue) => {
     setValue(inputTitleValue);
