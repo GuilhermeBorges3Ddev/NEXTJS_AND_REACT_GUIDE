@@ -12,6 +12,7 @@ import P from 'prop-types';
 
 import { AppMenu } from '../../components/AppMenu';
 import { AppWrapper } from '../../components/AppWrapper';
+import { DisplayedInput } from '../../components/DisplayedInput';
 import { IncrementButton } from '../../components/IncrementButton';
 import { Posts } from '../../components/Posts';
 import { AppMenuProvider } from '../../contexts/AppMenuProvider';
@@ -98,6 +99,10 @@ function AppFunction() {
     return <IncrementButton incrementUpdateFunction={incrementUpdateFunction} />;
   }, [incrementUpdateFunction]);
 
+  const displayedInputCall = useMemo(() => {
+    return <DisplayedInput value={value} setValue={setValue} ref={input} />;
+  }, [value, setValue, input]);
+
   const handleInputTitleClick = (inputTitleValue) => {
     setValue(inputTitleValue);
   };
@@ -123,9 +128,7 @@ function AppFunction() {
           Dark theme
         </button>
       </div>
-      <p>
-        <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
-      </p>
+      {displayedInputCall}
       <h1 style={{ color: 'antiquewhite' }}>Counter value: {counter}</h1>
       <h2 style={{ color: 'antiquewhite' }}>
         The application is running by:
