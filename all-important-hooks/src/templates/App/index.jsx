@@ -24,6 +24,7 @@ import SampleProvider from '../../contexts/SampleProvider';
 import { changeForNewBg, returnToOldBg } from '../../contexts/SampleProvider/actions';
 import { SampleContext } from '../../contexts/SampleProvider/context';
 import { useInterval } from '../../hooks/useInterval';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useTimer } from '../../hooks/useTimer';
 import logo from '../../logo.svg';
 
@@ -50,10 +51,9 @@ export default function AppRouter(props) {
 }
 
 function AppFunction() {
+  const [value, setValue] = useState('');
   const [counter, setCounter] = useState(0);
   const [displayTime, setDisplayTime] = useState(1000);
-
-  const [value, setValue] = useState('');
 
   const input = useRef(null);
   const componentDidUpdateTimes = useRef(0);
@@ -65,6 +65,7 @@ function AppFunction() {
   const incrementUpdateFunction = useCallback((num) => {
     setCounter((oldCounter) => oldCounter + num);
   }, []);
+
   /*
     componentDidMount - execute only when component mount
     useEffect(() => {
@@ -76,8 +77,9 @@ function AppFunction() {
     //The cleanup above is the componentWillUnmount
     return () => {
       setTimeout(() => {
-        document.querySelector('#wrapperAll').classList.remove('apply-shake');
-      }, 1000);
+        if (document.querySelector('#wrapperAll')?.classList)
+          document.querySelector('#wrapperAll').classList.remove('apply-shake');
+      }, 2000);
     };
   }, [counter]);
 
@@ -110,7 +112,15 @@ function AppFunction() {
   useInterval(() => setDisplayTime((lastTimeValue) => lastTimeValue + 1000), 1000);
 
   return (
-    <div id="wrapperAll" className="App" style={{ background: sampleState.background, color: sampleState.color }}>
+    <div
+      id="wrapperAll"
+      className="App"
+      style={{
+        background: sampleState.background,
+        color: sampleState.color,
+        overflowX: useMediaQuery('(min-width: 1200px)') ? 'hidden' : 'scroll',
+      }}
+    >
       <AppMenuProvider>
         <AppMenu />
       </AppMenuProvider>
