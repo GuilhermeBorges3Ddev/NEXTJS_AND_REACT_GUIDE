@@ -47,7 +47,11 @@ export default function AppRouter(props) {
         </SampleProvider>
       </PostsProvider>
     );
-  return <AppClass />;
+  return (
+    <AppClassErrorBoundary>
+      <AppClass />
+    </AppClassErrorBoundary>
+  );
 }
 
 function AppFunction() {
@@ -177,6 +181,9 @@ class AppClass extends Component {
     const { counter } = this.state;
     this.setState({ counter: counter + 1 });
   };
+  componentDidUpdate() {
+    if (this.state.counter === 10) throw Error("Counter value couldn't be more than 10");
+  }
   render() {
     const { counter, reverse } = this.state;
     const reverseClass = reverse ? 'reverse' : '';
@@ -197,3 +204,36 @@ class AppClass extends Component {
     );
   }
 }
+
+class AppClassErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasCounterErrors: false };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasCounterErrors: true };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.log(`%c${errorInfo}`, 'color: purple');
+  }
+  render() {
+    if (this.state.hasCounterErrors) {
+      return (
+        <h1 className="App-header" style={{ marginTop: 0, border: 0 }}>
+          <div>😱</div>
+          Something went wrong, counter value must be less than 10...
+        </h1>
+      );
+    } else {
+      return this.props.children;
+    }
+  }
+}
+
+AppClassErrorBoundary.propTypes = {
+  children: P.node,
+};
+
+AppClassErrorBoundary.defaultProps = {
+  children: <></>,
+};
