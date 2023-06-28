@@ -22,7 +22,7 @@ AppRouter.propTypes = {
 export default function AppRouter(props) {
   if (props.type === 'function')
     return (
-      <Suspense fallback={() => <div>Loading...</div>}>
+      <Suspense fallback={<div className="lazy-loading-div">Loading...</div>}>
         <PostsProvider>
           <SampleProvider>
             <AppFunctionStylesWrapper>
@@ -33,7 +33,7 @@ export default function AppRouter(props) {
       </Suspense>
     );
   return (
-    <Suspense fallback={() => <div>Loading...</div>}>
+    <Suspense fallback={<div className="lazy-loading-div">Loading...</div>}>
       <AppClassErrorBoundary>
         <AppClass />
       </AppClassErrorBoundary>
