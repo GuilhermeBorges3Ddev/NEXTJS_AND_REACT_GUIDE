@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import P from 'prop-types';
 
+import AppFunctionStylesWrapper from '../../components/AppFunctionStylesWrapper';
 import { AppMenu } from '../../components/AppMenu';
 import { AppWrapper } from '../../components/AppWrapper';
 import { DisplayedInput } from '../../components/DisplayedInput';
@@ -43,7 +44,9 @@ export default function AppRouter(props) {
     return (
       <PostsProvider>
         <SampleProvider>
-          <AppFunction />
+          <AppFunctionStylesWrapper>
+            <AppFunction />
+          </AppFunctionStylesWrapper>
         </SampleProvider>
       </PostsProvider>
     );
