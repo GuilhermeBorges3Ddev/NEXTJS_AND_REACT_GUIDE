@@ -2,7 +2,6 @@ import { INITIAL_STATE } from '.';
 import * as actionTypes from './actionTypes';
 
 export const counterReducer = (state, action) => {
-  console.log(action);
   switch (action.type) {
     case actionTypes.INCREASE:
       return { ...state, counter: state.counter + 1 };
