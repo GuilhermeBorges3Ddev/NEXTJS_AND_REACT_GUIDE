@@ -14,7 +14,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "format": "npx eslint ./src/**/*.js --fix",
@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.22.5",
+    "cross-env": "^7.0.3",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-jsx": "^0.1.0",
     "eslint-plugin-prettier": "^4.2.1",
