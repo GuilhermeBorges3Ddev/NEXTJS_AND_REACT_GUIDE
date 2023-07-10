@@ -29,12 +29,33 @@ The main idea of these project was create a UI for a dynamic search over items o
 
 # "all-important-hooks"
 
-As mentioned in the section above, install the project dependencies using `npm i` command and after just run `npm start` to see the project working on: **http://localhost:3001/**. You will see the same screen that you can see in the link: https://photos.app.goo.gl/cVDDVymYvEMykhTGA. To start our understanding about the project, go to the filepath **/src/templates/App** (remember that the compound React pattern says that all folders inside **templates/** are pages of the app); in these file you will see a _AppRouter_ functional component, it uses _React.lazy()_ concept to render the pages wrapped by a `<Suspense fallback={<div  className="lazy-loading-div">Loading...</div>} />`, to evolve a initial render tag while the stuffs have been loading:
+As mentioned in the section above, install the project dependencies using `npm i` command and after just run `npm start` to see the project working on: **http://localhost:3001/**. You will see the same screen that you can see in the link: https://photos.app.goo.gl/cVDDVymYvEMykhTGA. To start our understanding about the project, go to the filepath **/src/templates/App** (remember that the compound React pattern says that all folders inside **templates/** are pages of the app); in these file you will see a _AppRouter_ functional component, it uses _React.lazy()_ concept to render the pages wrapped by a `<Suspense fallback={<div className="lazy-loading-div">Loading...</div>} />`, to evolve a initial render tag while the stuffs have been loading:
 
 ```mermaid
+
 sequenceDiagram
-Browser->>RenderLayer:  props.type === 'function'
-RenderLayer-->>Browser:  <PostsProvider>{2 more Providers inside + AppFunction}</PostsProvider>
-Browser->>RenderLayer:  props.type === 'class'(or anything)
-RenderLayer-->>Browser:  <AppClassErrorBoundary><AppClass /></AppClassErrorBoundary>
+
+Browser->>RenderLayer: props.type === 'function'
+
+RenderLayer-->>Browser: <PostsProvider>{2 more Providers inside + AppFunction}</PostsProvider>
+
+Browser->>RenderLayer: props.type === 'class'(or anything)
+
+RenderLayer-->>Browser: <AppClassErrorBoundary><AppClass /></AppClassErrorBoundary>
+
 ```
+
+Continuing our understanding about the "RenderLayer" mentioned in the diagram, if the programmer pass the type prop "class" for example, he'll see a completely different UI: https://photos.app.goo.gl/k1uDNBC8VWejSMEx5
+
+These `<AppClass>` component has an important lifecycle method to check if the counter value reached the value of 10; reaching the value the interface throws an error: _"Counter value couldn't be more than 10"_. This error is invoked on purpose, rendering another page: https://photos.app.goo.gl/LPXSvqRErxw3heaw6. Who has the responsibility to deal with errors is the **/templates/AppClassErrorBoundary/index.js**, this file has an `getDerivedStateFromError(error)` and `componentDidCatch(error, errorInfo)` to compose an **error boundary** for the AppClass component. That's why the new interface of error is generated.
+
+And the another component to be understood is `<AppFunction />`. It's wrapped by 3 providers from the _React ContextAPI_: **PostsProvider**, **SampleProvider** and **AppFunctionStylesWrapper**, all providers are inside **/contexts** folder and has the same architecture within the same files and names, what is explained on the following diagram:
+
+| FileName   | Functionality                                                           |
+| ---------- | ----------------------------------------------------------------------- |
+| actions.js | `Methods who trigger dispatches from the useReducer() hook`             |
+| context.js | `Just a named const exportation of the hook createContext()`            |
+| data.js    | `Named object const exportation of useReducer() initial data`           |
+| index.jsx  | `Is the Provider, who uses context.js file populating the object value` |
+| reducer.js | `Receive a state and an action to trigger a new value for the state`    |
+| types.js   | `Typed data consts which can be used in reducer.js or action.js files`  |
