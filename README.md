@@ -26,3 +26,15 @@ There are **unitary tests** implemented over each component, it doesn't affect e
 - Also you can see the coverage report of the tests: `npm run coverage`.
 
 The main idea of these project was create a UI for a dynamic search over items on the interface, this is fast and async as you can see when you run it; although unitary and integrated tests were implemented to guarantee a certain level of reliability and endurance. In the file **index.jsx** on the root of the project you can change the type "class" to "function" you will see a HOC changing the view from a _RCC(React Class Component)_ to a _RFC(React Functional Component)_. When you click on the "Load more posts" button, the results containing more posts will appear instantly, because all the posts were loaded before, appearing only by demand.
+
+# "all-important-hooks"
+
+As mentioned in the section above, install the project dependencies using `npm i` command and after just run `npm start` to see the project working on: **http://localhost:3001/**. You will see the same screen that you can see in the link: https://photos.app.goo.gl/cVDDVymYvEMykhTGA. To start our understanding about the project, go to the filepath **/src/templates/App** (remember that the compound React pattern says that all folders inside **templates/** are pages of the app); in these file you will see a _AppRouter_ functional component, it uses _React.lazy()_ concept to render the pages wrapped by a `<Suspense fallback={<div  className="lazy-loading-div">Loading...</div>} />`, to evolve a initial render tag while the stuffs have been loading:
+
+```mermaid
+sequenceDiagram
+Browser->>RenderLayer:  props.type === 'function'
+RenderLayer-->>Browser:  <PostsProvider>{2 more Providers inside + AppFunction}</PostsProvider>
+Browser->>RenderLayer:  props.type === 'class'(or anything)
+RenderLayer-->>Browser:  <AppClassErrorBoundary><AppClass /></AppClassErrorBoundary>
+```
