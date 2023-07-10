@@ -1,11 +1,12 @@
 {
-  "name": "project-one",
+  "name": "all-important-hooks",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -13,17 +14,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "cross-env PORT=3000 react-scripts start",
+    "start": "cross-env PORT=3001 react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test-button": "npm test Button.spec.jsx",
-    "test-postcard": "npm test PostCard.spec.jsx",
-    "test-posts": "npm test Posts.spec.jsx",
-    "test-texting": "npm test TextInput.spec.jsx",
-    "format": "npx eslint src/**/*.jsx --fix",
-    "coverage": "npm test -- --watchAll='false' --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "npx eslint ./src/**/*.js --fix"
   },
+  "parser": "babel-eslint",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -43,11 +39,11 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.22.5",
     "cross-env": "^7.0.3",
     "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-jsx": "^0.1.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.32.2",
-    "msw": "^1.2.1",
-    "prettier": "^2.8.7"
+    "prettier": "^2.8.8"
   }
 }

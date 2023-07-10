@@ -1,25 +1,61 @@
-# NEXTJS_AND_REACT_GUIDE
+# NEXTJS AND REACT GUIDE
 
-## v0.1.0
+## v1.1.0
 
-## I recommend you to create your own SSH key to be used on Github, using the following command:
+In these repository you'll find three main projects organized into 3 different folders: **all-important-hooks/**, **applying-all-important-hooks/**, and **project-one/**. Each section bellow contains the explanation of main concepts what i've been using on it; feel free to clone this repo and explore the features yourself. Have a nice read and play cool!
 
-ssh-keygen -t rsa -C 'your-mail-address@provider.com'
+# "project-one"
 
-# After the command above, reopen the terminal and execute the lines bellow:
+First of all, install the project dependencies using `npm i` command. After that just run `npm start` to see the project working on: **http://localhost:3000/**. You will see exactly these design, click on the link to see: https://photos.app.goo.gl/zmjrJ2uZYsrG963W9
+At the home page was created an "_compound react components arch_". We've a main **templates/** folder, any folder inside of it is a page. The **components/** folder has a global view of components, that can be used inside of wherever template which wants:
 
-eval "$(ssh-agent -s)"
-ssh-add /c/Users/your-user/.ssh/key-name
+```mermaid
+graph LR
+A[Components] --> B(Button)
+A --> C(PostsCard)
+A --> D(Posts)
+A --> E(TextInput)
+```
 
-# Initializing your Git user configs:
+There are **unitary tests** implemented over each component, it doesn't affect each other:
 
-git init
-git config --global user.name "YOUR USERNAME"
-git config --global user.email "mail@provider.com"
-git remote add origin git@github.com:YOUR-PATH-FOR-GITHUB-SSH
+- You can run one of the following commands to test the components on isolated mode: `npm run test-button`, `npm run test-postcard`, `npm run test-posts` or `npm run test-texting`.
 
-# When you edit firstly:
+  > As an alternative you can run all of them integrated into a single test: `npm test`
 
-git add .
-git commit -m 'SOME MESSAGE'
-git push origin master
+- Also you can see the coverage report of the tests: `npm run coverage`.
+
+The main idea of these project was create a UI for a dynamic search over items on the interface, this is fast and async as you can see when you run it; although unitary and integrated tests were implemented to guarantee a certain level of reliability and endurance. In the file **index.jsx** on the root of the project you can change the type "class" to "function" you will see a HOC changing the view from a _RCC(React Class Component)_ to a _RFC(React Functional Component)_. When you click on the "Load more posts" button, the results containing more posts will appear instantly, because all the posts were loaded before, appearing only by demand.
+
+# "all-important-hooks"
+
+As mentioned in the section above, install the project dependencies using `npm i` command and after just run `npm start` to see the project working on: **http://localhost:3001/**. You will see the same screen that you can see in the link: https://photos.app.goo.gl/cVDDVymYvEMykhTGA. To start our understanding about the project, go to the filepath **/src/templates/App** (remember that the compound React pattern says that all folders inside **templates/** are pages of the app); in these file you will see a _AppRouter_ functional component, it uses _React.lazy()_ concept to render the pages wrapped by a `<Suspense fallback={<div className="lazy-loading-div">Loading...</div>} />`, to evolve a initial render tag while the stuffs have been loading:
+
+```mermaid
+
+sequenceDiagram
+
+Browser->>RenderLayer: props.type === 'function'
+
+RenderLayer-->>Browser: <PostsProvider>{2 more Providers inside + AppFunction}</PostsProvider>
+
+Browser->>RenderLayer: props.type === 'class'(or anything)
+
+RenderLayer-->>Browser: <AppClassErrorBoundary><AppClass /></AppClassErrorBoundary>
+
+```
+
+Continuing our understanding about the "RenderLayer" mentioned in the diagram, if the programmer pass the type prop "class" for example, he'll see a completely different UI: https://photos.app.goo.gl/k1uDNBC8VWejSMEx5
+
+These `<AppClass>` component has an important lifecycle method to check if the counter value reached the value of 10; reaching the value the interface throws an error: _"Counter value couldn't be more than 10"_. This error is invoked on purpose, rendering another page: https://photos.app.goo.gl/LPXSvqRErxw3heaw6. Who has the responsibility to deal with errors is the **/templates/AppClassErrorBoundary/index.js**, this file has an `getDerivedStateFromError(error)` and `componentDidCatch(error, errorInfo)` to compose an **error boundary** for the AppClass component. That's why the new interface of error is generated.
+
+And the another component to be understood is `<AppFunction />`. It's wrapped by 3 providers from the _React ContextAPI_: **PostsProvider**, **SampleProvider** and **AppFunctionStylesWrapper**, all providers are inside **/contexts** folder and has the same architecture within the same files and names, what is explained on the following diagram:
+
+| FileName   | Functionality                                                           |
+| ---------- | ----------------------------------------------------------------------- |
+| actions.js | `Methods who trigger dispatches from the useReducer() hook`             |
+| context.js | `Just a named const exportation of the hook createContext()`            |
+| data.js    | `Named object const exportation of useReducer() initial data`           |
+| index.jsx  | `Is the Provider, who uses context.js file populating the object value` |
+| reducer.js | `Receive a state and an action to trigger a new value for the state`    |
+| types.js   | `Typed data consts which can be used in reducer.js or action.js files`  |
