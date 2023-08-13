@@ -7,21 +7,28 @@ In these repository you'll find three main projects organized into 3 different f
 # "project-one"
 
 First of all, install the project dependencies using `npm i` command. After that just run `npm start` to see the project working on: **http://localhost:3000/**. You will see exactly these design, click on the link to see: https://photos.app.goo.gl/zmjrJ2uZYsrG963W9
+
 At the home page was created an "_compound react components arch_". We've a main **templates/** folder, any folder inside of it is a page. The **components/** folder has a global view of components, that can be used inside of wherever template which wants:
 
 ```mermaid
+
 graph LR
+
 A[Components] --> B(Button)
+
 A --> C(PostsCard)
+
 A --> D(Posts)
+
 A --> E(TextInput)
+
 ```
 
 There are **unitary tests** implemented over each component, it doesn't affect each other:
 
 - You can run one of the following commands to test the components on isolated mode: `npm run test-button`, `npm run test-postcard`, `npm run test-posts` or `npm run test-texting`.
 
-  > As an alternative you can run all of them integrated into a single test: `npm test`
+> As an alternative you can run all of them integrated into a single test: `npm test`
 
 - Also you can see the coverage report of the tests: `npm run coverage`.
 
@@ -59,3 +66,46 @@ And the another component to be understood is `<AppFunction />`. It's wrapped by
 | index.jsx  | `Is the Provider, who uses context.js file populating the object value` |
 | reducer.js | `Receive a state and an action to trigger a new value for the state`    |
 | types.js   | `Typed data consts which can be used in reducer.js or action.js files`  |
+
+To complete the understanding about these project, the **PostsProvider** exposes the <u>postsState</u> and the <u>postDispatch</u>; the state has the posts content and the dispacth method is used to dispatch an action, who triggers the posts all over the layout, see the following code to understand:
+
+`useEffect(() => {
+Actions.loadPosts(postsDispatch);
+}, [postsDispatch]);`
+
+The **SampleProvider** is the one responsible for exposing <u>sampleState</u> and <u>sampleDispatcher</u>; the state here is an object, who has the information about the light and dark theme, you can switch the theme on real time, this behavior is triggered by the dispatch, the actions "returnToOldBg"(dark) and "changeForNewBg"(light) call these dispatch and execute this action. Observe the following code see it happen:
+
+  <code>
+    <div
+        id="wrapperAll"
+        className="App"
+        style={{
+        background: sampleState.background,
+        color: sampleState.color,
+        overflowX:  useMediaQuery('(min-width: 1200px)') ?  'hidden'  :  'scroll',
+    }}
+    >
+    <AppMenuProvider>
+    <AppMenu  />
+    </AppMenuProvider>
+    <div>
+    <button
+        style={{ marginRight:  '10px', background:  'blue', color:  'white' }}
+        onClick={() =>  returnToOldBg(sampleDispatcher)}
+    >
+    Light theme
+    </button>
+    <button
+        style={{ marginRight:  '10px', background:  'black', color:  'white' }}
+        onClick={() =>  changeForNewBg(sampleDispatcher)}
+    >
+    Dark theme
+    </button>
+    .... continue
+  </code>
+
+The last provider to understand is the **AppMenuProvider**, who only wrap a single component: AppMenu. Inside of the AppMenu the <u>MenuContext</u> is used, exposing the menuDispatcher and 3 actions: changeLeftMenuItem(), changeCenterMenuItem() and changeRightMenuItem(), each action here is responsible to reverse the menu items text and gives an user alert warning. With the providers and his structures explained go into the **hooks/** folder and see the custom hooks implemented if you want.
+
+# "applying-all-important-hooks"
+
+All your files and folders are presented as a tree in the file explorer. You can switch from one to another by clicking a file in the tree.
