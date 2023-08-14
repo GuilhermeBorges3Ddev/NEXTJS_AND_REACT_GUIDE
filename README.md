@@ -11,17 +11,11 @@ First of all, install the project dependencies using `npm i` command. After that
 At the home page was created an "_compound react components arch_". We've a main **templates/** folder, any folder inside of it is a page. The **components/** folder has a global view of components, that can be used inside of wherever template which wants:
 
 ```mermaid
-
 graph LR
-
 A[Components] --> B(Button)
-
 A --> C(PostsCard)
-
 A --> D(Posts)
-
 A --> E(TextInput)
-
 ```
 
 There are **unitary tests** implemented over each component, it doesn't affect each other:
@@ -39,17 +33,11 @@ The main idea of these project was create a UI for a dynamic search over items o
 As mentioned in the section above, install the project dependencies using `npm i` command and after just run `npm start` to see the project working on: **http://localhost:3001/**. You will see the same screen that you can see in the link: https://photos.app.goo.gl/cVDDVymYvEMykhTGA. To start our understanding about the project, go to the filepath **/src/templates/App** (remember that the compound React pattern says that all folders inside **templates/** are pages of the app); in these file you will see a _AppRouter_ functional component, it uses _React.lazy()_ concept to render the pages wrapped by a `<Suspense fallback={<div className="lazy-loading-div">Loading...</div>} />`, to evolve a initial render tag while the stuffs have been loading:
 
 ```mermaid
-
 sequenceDiagram
-
 Browser->>RenderLayer: props.type === 'function'
-
 RenderLayer-->>Browser: <PostsProvider>{2 more Providers inside + AppFunction}</PostsProvider>
-
 Browser->>RenderLayer: props.type === 'class'(or anything)
-
 RenderLayer-->>Browser: <AppClassErrorBoundary><AppClass /></AppClassErrorBoundary>
-
 ```
 
 Continuing our understanding about the "RenderLayer" mentioned in the diagram, if the programmer pass the type prop "class" for example, he'll see a completely different UI: https://photos.app.goo.gl/k1uDNBC8VWejSMEx5
@@ -75,37 +63,50 @@ Actions.loadPosts(postsDispatch);
 
 The **SampleProvider** is the one responsible for exposing <u>sampleState</u> and <u>sampleDispatcher</u>; the state here is an object, who has the information about the light and dark theme, you can switch the theme on real time, this behavior is triggered by the dispatch, the actions "returnToOldBg"(dark) and "changeForNewBg"(light) call these dispatch and execute this action. Observe the following code see it happen:
 
-  <code>
-    <div
-        id="wrapperAll"
-        className="App"
-        style={{
-        background: sampleState.background,
-        color: sampleState.color,
-        overflowX:  useMediaQuery('(min-width: 1200px)') ?  'hidden'  :  'scroll',
-    }}
-    >
-    <AppMenuProvider>
-    <AppMenu  />
-    </AppMenuProvider>
-    <div>
-    <button
-        style={{ marginRight:  '10px', background:  'blue', color:  'white' }}
-        onClick={() =>  returnToOldBg(sampleDispatcher)}
-    >
-    Light theme
-    </button>
-    <button
-        style={{ marginRight:  '10px', background:  'black', color:  'white' }}
-        onClick={() =>  changeForNewBg(sampleDispatcher)}
-    >
-    Dark theme
-    </button>
-    .... continue
-  </code>
+```typescript
+<div
+	id="wrapperAll"
+	className="App"
+	style={{
+	background: sampleState.background,
+	color: sampleState.color,
+		overflowX: useMediaQuery('(min-width: 1200px)') ?  'hidden'  :  'scroll',
+	}}
+>
+	<AppMenuProvider>
+		<AppMenu />
+	</AppMenuProvider>
+<div>
+
+<button
+	style={{ marginRight: '10px', background: 'blue', color: 'white' }}
+	onClick={() => returnToOldBg(sampleDispatcher)}
+>
+Light theme
+</button>
+
+<button
+	style={{ marginRight: '10px', background: 'black', color: 'white' }}
+	onClick={() => changeForNewBg(sampleDispatcher)}
+>
+Dark theme
+</button>
+.... continue
+```
 
 The last provider to understand is the **AppMenuProvider**, who only wrap a single component: AppMenu. Inside of the AppMenu the <u>MenuContext</u> is used, exposing the menuDispatcher and 3 actions: changeLeftMenuItem(), changeCenterMenuItem() and changeRightMenuItem(), each action here is responsible to reverse the menu items text and gives an user alert warning. With the providers and his structures explained go into the **hooks/** folder and see the custom hooks implemented if you want.
 
 # "applying-all-important-hooks"
 
-All your files and folders are presented as a tree in the file explorer. You can switch from one to another by clicking a file in the tree.
+As saw in the 2 projects above, install the project dependencies using `npm i` command and after just run `npm start` to see the project working on: **http://localhost:3002/**. If you observe the file <i>/templates/Home/index,jsx</i> you will see the 6 actions created in factory file _buildActions.js_:
+
+- **actions.increase()**: Make the counter displayed in the UI be increased with the positive value +1.
+- **actions.decrease()**: Make the counter displayed in the UI be decreased with the negative value -1.
+- **actions.reset()**: Calls the state value of counter to zero and the loading value to false.
+- **actions.setCounter()**: This action receives a payload with the counter value, you can update the value passing -10 or +10 per example. But it's only expected to be passed something like that: `{counter: 10}`.
+- **actions.asyncIncrease()**: When this action is triggered, firstly is setted the **ASYNC_INCREASE_START**, who sets the loadind value to true, awaiting another async function call, in these case the second action: **ASYNC_INCREASE_END**, who makes the loading state be false again and the counter value to +1 added in the current value .
+- **actions.asyncError()**: Firstly calls the **ASYNC_INCREASE_START** either, giving the loading value to true. And after the action **ASYNC_INCREASE_ERROR** is setted, putting the loading value to false, but before, the Promise() fires an proposital error.
+
+Those actions are displayed by buttons, you'll note it when you interect with the UI: https://photos.app.goo.gl/yPrNp2YFsN87tJVDA.
+
+If you wanna understand the deep side of the code, see the <u>CounterContext</u>, it's the one and only Context. The only different file in this project is the <i>buildActions.js</i>, but if you read the <i>actionTypes.js</i> it has an ACTIONS_PREFIX constant, it works as a suffix to all other actions in this file. However, these project is simple, the only additional information here is the async actions and the hook **useCounterContext()**, whick makes the developer pass a context to the hook, otherwise an Error is generated to avoid errors on the use of this custom hook.
