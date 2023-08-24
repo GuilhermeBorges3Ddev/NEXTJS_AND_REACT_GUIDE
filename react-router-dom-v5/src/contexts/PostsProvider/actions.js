@@ -5,7 +5,6 @@ export const loadPosts = async (dispatch) => {
 
   const postsRaw = await fetch('https://jsonplaceholder.typicode.com/posts');
   const posts = await postsRaw.json();
-  console.log('Carreguei os posts');
 
   return () => dispatch({ type: types.POSTS_SUCCESS, payload: posts });
 };
