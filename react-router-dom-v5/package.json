@@ -1,6 +1,6 @@
 {
   "name": "react-router-dom-v5",
-  "version": "0.9.5",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "prop-types": "^15.7.2",

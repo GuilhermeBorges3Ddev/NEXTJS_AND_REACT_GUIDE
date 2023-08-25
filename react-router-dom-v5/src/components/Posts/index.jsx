@@ -15,15 +15,25 @@ export const Posts = () => {
         dispatch();
       }
     });
-
     return () => {
       isMounted.current = false;
     };
   }, [postsDispatch]);
 
   return (
-    <div>
-      <h1>POSTS</h1>
+    <div
+      style={{
+        backgroundColor: '#FED8B1',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        padding: '0 10%',
+      }}
+    >
+      <h1 style={{ width: '100vw', textAlign: 'center' }}>
+        Welcome to home page with some random text:
+      </h1>
       {postsState.loading && (
         <p>
           <strong>Loading posts...</strong>
