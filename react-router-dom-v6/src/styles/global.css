@@ -5,5 +5,14 @@
 }
 
 body {
+  text-align: center;
+  color: antiquewhite;
   font-family: sans-serif;
+  background: rgb(111, 87, 102);
+  background: radial-gradient(
+    circle,
+    rgba(111, 87, 102, 1) 54%,
+    rgba(93, 112, 128, 1) 96%,
+    rgba(105, 93, 122, 1) 100%
+  );
 }

@@ -1,5 +1,23 @@
 .menu ul {
   display: flex;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(110, 110, 115, 1) 100%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  border: 2px solid magenta;
+  justify-content: space-around;
   list-style: none;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
   gap: 30px;
+}
+
+a {
+  color: antiquewhite;
+  font-weight: bolder;
+  font-size: 1.25rem;
+  text-decoration: none;
 }
