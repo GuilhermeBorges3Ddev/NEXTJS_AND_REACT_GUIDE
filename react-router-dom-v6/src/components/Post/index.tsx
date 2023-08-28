@@ -1,12 +1,11 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import "./styles.css";
 
 export const Post = () => {
   const params = useParams();
   const [qs] = useSearchParams();
   const decideUserPostMessage = (): string => {
     if (Object.keys(params).length == 0) {
-      return "Posts";
+      return ":::Posts::: Try to type a search param around the link, like: ?page=1000";
     } else if (Object.keys(params).length == 1 && params.id) {
       return `ID of the searched Post: ${params.id}`;
     }

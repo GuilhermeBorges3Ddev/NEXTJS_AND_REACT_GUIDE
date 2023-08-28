@@ -1,3 +1,7 @@
+.menu {
+  height: 8vh;
+}
+
 .menu ul {
   display: flex;
   background: rgb(2, 0, 36);
