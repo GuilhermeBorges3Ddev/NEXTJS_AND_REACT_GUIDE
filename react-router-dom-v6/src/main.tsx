@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Posts } from "./components/Posts/index.tsx";
 import { Post } from "./components/Post/index.tsx";
 import { Menu } from "./components/Menu/index.tsx";
 import { Home } from "./components/Home/index.tsx";
@@ -15,8 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/posts/:id" element={<Post />} />
-        <Route path="/posts" element={<Post />} />
+        <Route path="/posts" element={<Posts />}>
+          <Route path=":id" element={<Post />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
