@@ -21,9 +21,31 @@ export const About = () => {
           fontSize: "1.5rem",
           cursor: "pointer",
         }}
-        onClick={() => navigate(`/posts?page=${RANDOM_POSTS_PAGE}`)}
+        onClick={() =>
+          navigate(`/posts?page=${RANDOM_POSTS_PAGE}`, {
+            state: "/about",
+          })
+        }
       >
         Go to Posts into a random page
+      </button>
+      <br />
+      <button
+        style={{
+          color: "white",
+          background: "magenta",
+          padding: "1rem",
+          marginTop: "3rem",
+          fontSize: "1.5rem",
+          cursor: "pointer",
+        }}
+        onClick={() =>
+          navigate("..", {
+            relative: "path",
+          })
+        }
+      >
+        Back to home
       </button>
     </div>
   );

@@ -1,8 +1,15 @@
-import { Outlet, useParams, useSearchParams } from "react-router-dom";
+import {
+  Outlet,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 export const Posts = () => {
   const params = useParams();
+  const { state } = useLocation();
   const [qs] = useSearchParams();
+  console.log("state", state);
   const decideUserPostMessage = (): string => {
     if (Object.keys(params).length == 0) {
       return ":::Posts::: Try to type a search param around the link, like: ?page=1000";
@@ -37,6 +44,7 @@ export const Posts = () => {
       <br />
       <h3>{getQueryStringValues()}</h3>
       <br />
+      {state && <p>You came from pathname: {state}</p>}
       <Outlet />
     </div>
   );

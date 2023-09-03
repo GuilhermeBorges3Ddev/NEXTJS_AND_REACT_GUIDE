@@ -6,7 +6,9 @@ export const Menu = () => {
     <nav className="menu">
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/" state={true}>
+            Home
+          </Link>
         </li>
         <li>
           <Link to="/about">About</Link>
