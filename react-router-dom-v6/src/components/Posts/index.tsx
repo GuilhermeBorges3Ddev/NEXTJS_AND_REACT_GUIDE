@@ -9,7 +9,7 @@ export const Posts = () => {
   const params = useParams();
   const { state } = useLocation();
   const [qs] = useSearchParams();
-  console.log("state", state);
+  ("");
   const decideUserPostMessage = (): string => {
     if (Object.keys(params).length == 0) {
       return ":::Posts::: Try to type a search param around the link, like: ?page=1000";
