@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 export const Products = () => {
   const { category, id } = useParams();

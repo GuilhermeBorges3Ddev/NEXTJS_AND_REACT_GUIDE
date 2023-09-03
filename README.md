@@ -1,8 +1,8 @@
 # NEXTJS AND REACT GUIDE
 
-## v1.1.0
+## v1.2.0
 
-In these repository you'll find three main projects organized into 3 different folders: **all-important-hooks/**, **applying-all-important-hooks/**, and **project-one/**. Each section bellow contains the explanation of main concepts what i've been using on it; feel free to clone this repo and explore the features yourself. Have a nice read and play cool!
+In these repository you'll find five main projects organized into 5 different folders: **all-important-hooks/**, **applying-all-important-hooks/**, **project-one/**, **react-router-dom-v5** and **react-router-dom-v6**. Each section bellow contains the explanation of main concepts what i've been using on it; feel free to clone this repo and explore the features yourself. Have a nice read and play cool!
 
 # "project-one"
 
@@ -55,7 +55,7 @@ And the another component to be understood is `<AppFunction />`. It's wrapped by
 | reducer.js | `Receive a state and an action to trigger a new value for the state`    |
 | types.js   | `Typed data consts which can be used in reducer.js or action.js files`  |
 
-To complete the understanding about these project, the **PostsProvider** exposes the <u>postsState</u> and the <u>postDispatch</u>; the state has the posts content and the dispacth method is used to dispatch an action, who triggers the posts all over the layout, see the following code to understand:
+To complete the understanding about these project, the **PostsProvider** exposes the <u>postsState</u> and the <u>postDispatch</u>; the state has the posts content and the dispatch method is used to dispatch an action, who triggers the posts all over the layout, see the following code to understand:
 
 `useEffect(() => {
 Actions.loadPosts(postsDispatch);
@@ -104,9 +104,43 @@ As saw in the 2 projects above, install the project dependencies using `npm i` c
 - **actions.decrease()**: Make the counter displayed in the UI be decreased with the negative value -1.
 - **actions.reset()**: Calls the state value of counter to zero and the loading value to false.
 - **actions.setCounter()**: This action receives a payload with the counter value, you can update the value passing -10 or +10 per example. But it's only expected to be passed something like that: `{counter: 10}`.
-- **actions.asyncIncrease()**: When this action is triggered, firstly is setted the **ASYNC_INCREASE_START**, who sets the loadind value to true, awaiting another async function call, in these case the second action: **ASYNC_INCREASE_END**, who makes the loading state be false again and the counter value to +1 added in the current value .
-- **actions.asyncError()**: Firstly calls the **ASYNC_INCREASE_START** either, giving the loading value to true. And after the action **ASYNC_INCREASE_ERROR** is setted, putting the loading value to false, but before, the Promise() fires an proposital error.
+- **actions.asyncIncrease()**: When this action is triggered, firstly is setted the **ASYNC_INCREASE_START**, who sets the loading value to true, awaiting another async function call, in these case the second action: **ASYNC_INCREASE_END**, who makes the loading state be false again and the counter value to +1 added in the current value .
+- **actions.asyncError()**: Firstly calls the **ASYNC_INCREASE_START** either, giving the loading value to true. And after the action **ASYNC_INCREASE_ERROR** is setted, putting the loading value to false, but before, the Promise() fires an proposal error.
 
-Those actions are displayed by buttons, you'll note it when you interect with the UI: https://photos.app.goo.gl/yPrNp2YFsN87tJVDA.
+Those actions are displayed by buttons, you'll note it when you interact with the UI: https://photos.app.goo.gl/yPrNp2YFsN87tJVDA.
 
-If you wanna understand the deep side of the code, see the <u>CounterContext</u>, it's the one and only Context. The only different file in this project is the <i>buildActions.js</i>, but if you read the <i>actionTypes.js</i> it has an ACTIONS_PREFIX constant, it works as a suffix to all other actions in this file. However, these project is simple, the only additional information here is the async actions and the hook **useCounterContext()**, whick makes the developer pass a context to the hook, otherwise an Error is generated to avoid errors on the use of this custom hook.
+If you wanna understand the deep side of the code, see the <u>CounterContext</u>, it's the one and only Context. The only different file in this project is the <i>buildActions.js</i>, but if you read the <i>actionTypes.js</i> it has an ACTIONS_PREFIX constant, it works as a suffix to all other actions in this file. However, these project is simple, the only additional information here is the async actions and the hook **useCounterContext()**, which makes the developer pass a context to the hook, otherwise an Error is generated to avoid errors on the use of this custom hook.
+
+# "react-router-dom-v5"
+
+These project was created to exemplify the core functionalities of **react-router-dom 5.2.0** , first of all, install the project dependencies using `npm i` command and after just run `npm start` to see the project working on: **http://localhost:3003/**. You will see the same screen that you can see in the link:
+https://photos.app.goo.gl/GxEnAwFnXD3obKmJ9.
+
+The screen above is seen cause the route matches with one of three routes registered into **/src/index.jsx**. Let's understand the code looking close to the this file:
+
+```typescript
+ReactDOM.render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <Menu />
+      <Switch>
+        <Route path="/products/:category?/:id?" component={Products} />
+        <Route path="/" component={App} exact />
+        <Route path="*" component={Page404} />
+      </Switch>
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById("root")
+);
+```
+
+Beyond the spoken route, we've other important path, the **/products/:category?/:id?**, these route contains two optional URIs: _category_ and _id_. If you digit only the first param passing the value "drinks", you will compose the route: **/products/drinks**. Pressing enter the following screen wil be seen:
+https://photos.app.goo.gl/ib3MAeCksRgYPYAz8
+
+So, how the component **/src/templates/Products/index.jsx** knows that **"/:category?"** param was passed and the **"/:id?"** don't? That's the first hook that i tested, the **useParams()**, and i extracted the <u>category and the id</u>. Based on that 2 variables extracted values i made a conditional rendering, if the user fullfil both he will see a version of the component, totally different than just **"/:category?"** . Suppose that the user wrote the route **/products/drinks/14444**, if he visit it he will see exactly the image bellow:
+https://photos.app.goo.gl/UJeVKGVvhuDVn9St5
+
+The other route registered is a fallback when the desired pathname does not matches with the other two valid paths, it's the `<Route path="*" component={Page404} />`. These **Page404** component can be read into the file **/src/templates/Page404/index.jsx**, inside of it we've a **useLocation( )** hook to get the pathname searched by the user, if he type a nonexistent route like **"/products/cccccccccccccccc"**, he will see the following page opened:
+https://photos.app.goo.gl/iL8WLhDWTPne7apk8
+
+Inside of that page the user can see the typed route by him and the the available paths too. By the end, we have another hook called, the **useHistory( )**, which is used to redirect the user for the home page again, before 10 seconds after the 404 page appear. As you can see these project is pretty simple and contains the main concepts of react-router-dom on the v5. In the following project you will note some differences over the v6.
