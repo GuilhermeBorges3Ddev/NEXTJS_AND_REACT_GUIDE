@@ -1,0 +1,14 @@
+.notFoundWrapper {
+  height: 100vh;
+  margin: 0;
+  padding-top: 20%;
+  font-smooth: 4px;
+  font-style: oblique;
+  background: rgb(175, 4, 24);
+  background: radial-gradient(
+    circle,
+    rgba(175, 4, 24, 1) 0%,
+    rgba(218, 98, 28, 1) 66%,
+    rgba(244, 145, 15, 1) 81%
+  );
+}
