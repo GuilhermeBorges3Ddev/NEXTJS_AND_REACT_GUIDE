@@ -1,0 +1,18 @@
+{
+    "collectionName": "components_section_image_grids",
+    "info": {
+        "displayName": "Image_Grid",
+        "icon": "picture"
+    },
+    "options": {},
+    "attributes": {
+        "Image": {
+            "allowedTypes": [
+                "images"
+            ],
+            "type": "media",
+            "multiple": true,
+            "required": true
+        }
+    }
+}

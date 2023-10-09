@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_section_text_grids",
+  "info": {
+    "displayName": "Text-Grid",
+    "icon": "pencil"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Description": {
+      "type": "text",
+      "required": true
+    }
+  }
+}
